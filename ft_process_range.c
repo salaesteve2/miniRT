@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 13:18:57 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/20 09:13:03 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/20 10:51:26 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,5 @@ int	ft_process_range_light(double *nb)
 	x = 4;
 	if (nb[x] < 0 || nb[x] > 1)
 		return (1);
-	x++;
-	while (nb[x] != -2)
-	{
-		if (nb[x] < 0 || nb[x] > 255)
-			return (1);
-		x++;
-	}
 	return (0);
 }
