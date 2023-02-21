@@ -6,14 +6,13 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/20 10:46:21 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/21 09:03:21 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../includes/minirt.h"
 
 // Creación ventana
-
 typedef struct s_s
 {
 	void	*mlx;
@@ -38,7 +37,7 @@ void	ft_mlx_init(void)
 	t_s		window;
 
 	window.mlx = mlx_init();
-	window.mlx_win = mlx_new_window(window.mlx, 1920, 1080, "MiniRT");
+	window.mlx_win = mlx_new_window(window.mlx, 1080, 720, "MiniRT");
 	mlx_pixel_put(window.mlx, window.mlx_win, 200, 200, 0xfafad2);
 	mlx_key_hook(window.mlx_win, key_hook, &window);
 	mlx_hook(window.mlx_win, 17, 1L << 17, ft_exit_hook, &window);
@@ -57,6 +56,11 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 	{
 		perror("Error in number of arguments");
+		return (1);
+	}
+	else if (ft_strncmp_rev(argv[1], ".rt", 3))
+	{
+		perror("Argument must be a '.rt' file");
 		return (1);
 	}
 	s = ft_data(argv);
