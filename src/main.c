@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/21 09:15:57 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/21 09:31:21 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ void	ft_mlx_init(void)
 	free(window.mlx);
 	free(window.mlx_win);
 }
-//
+/*
+Normalizar vector es transormar un vector con la misma direccion y sentido pero modulo 1
+Reduce considerablemente la carga computacional
+
+v = v / |v| (4, 2, 3) / √(4^2, 2^2, 3^2)
+*/
 
 int	main(int argc, char *argv[])
 {
@@ -54,18 +59,18 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		perror("Error in number of arguments");
+		perror("Error: Number of arguments");
 		return (1);
 	}
 	else if (ft_strncmp_rev(argv[1], ".rt", 3))
 	{
-		perror("Argument must be a '.rt' file");
+		perror("Error: Argument must be a '.rt' file");
 		return (1);
 	}
 	s = ft_data(argv);
 	if (!s)
 	{
-		perror("Error in open the file");
+		perror("Error: In open the file");
 		return (1);
 	}
 	lines = ft_split(s, '\n');
