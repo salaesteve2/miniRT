@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/21 09:03:21 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/21 09:15:57 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	ft_mlx_init(void)
 
 	window.mlx = mlx_init();
 	window.mlx_win = mlx_new_window(window.mlx, 1080, 720, "MiniRT");
-	mlx_pixel_put(window.mlx, window.mlx_win, 200, 200, 0xfafad2);
 	mlx_key_hook(window.mlx_win, key_hook, &window);
 	mlx_hook(window.mlx_win, 17, 1L << 17, ft_exit_hook, &window);
 	mlx_loop(window.mlx);
