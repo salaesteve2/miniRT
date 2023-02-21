@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/21 09:31:21 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/21 09:33:49 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ void	ft_mlx_init(void)
 	free(window.mlx);
 	free(window.mlx_win);
 }
+
 /*
-Normalizar vector es transormar un vector con la misma direccion y sentido pero modulo 1
+Normalizar vector: Transorma un vector con la misma direccion y sentido pero modulo 1
 Reduce considerablemente la carga computacional
 
-v = v / |v| (4, 2, 3) / √(4^2, 2^2, 3^2)
+v = v / |v| => (4, 2, 3) / √(4^2, 2^2, 3^2)
 */
 
 int	main(int argc, char *argv[])
