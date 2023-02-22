@@ -1,4 +1,4 @@
-SRCS = main.c ft_data.c get_next_line/get_next_line.c ft_process_range.c ft_process_range2.c ft_process_utils.c	ft_process.c ft_process_objet.c ft_process_camera.c utils.c
+SRCS = src/main.c src/ft_data.c src/get_next_line/get_next_line.c src/ft_process_range.c src/ft_process_range2.c src/ft_process_utils.c	src/ft_process.c src/ft_process_objet.c src/ft_process_camera.c src/utils.c
 
 SRCBS = 
 
@@ -20,9 +20,9 @@ CI = -I sl_inc/
 
 RM = rm -f
 
-LIBMLX = mlx/libmlx.a
+LIBMLX = lib/mlx/libmlx.a
 
-LIBFT = libft/libft.a
+LIBFT = lib/libft/libft.a
 
 ${NAME}: ${SRCS} ${LIBMLX} ${LIBFT}
 	${CC} ${FLAGS} ${CF} ${CI} ${SL} ${SRCS} ${LIBMLX}  ${LIBFT} -o ${NAME}
@@ -31,10 +31,10 @@ ${BONUS}: ${SRCBS} ${LIBMLX}
 	${CC} ${FLAGS} ${CF} ${CI} ${SL} ${SRCBS} ${LIBMLX} ${LIBFT} -o ${BONUS}
 
 ${LIBMLX}:
-	make -C mlx/
+	make -C lib/mlx/
 
 ${LIBFT}:
-	make bonus -C libft/
+	make bonus -C lib/libft/
 
 all: ${NAME}
 
@@ -47,8 +47,8 @@ bonus: ${BONUS}
 fclean: clean 
 		${RM} ${NAME}
 		${RM} ${BONUS}
-		make clean -C mlx/
-		make fclean -C libft/
+		make clean -C lib/mlx/
+		make fclean -C lib/libft/
 
 re: fclean all
 

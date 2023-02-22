@@ -2,8 +2,8 @@
 # define RAYTRACER_H
 # include "geometry.h"
 # include "camera.h"
-# include "../minirt.h"
-# include "../libft/libft.h"
+# include "minirt.h"
+# include "../lib/libft/libft.h"
 
 typedef struct  s_light
 {

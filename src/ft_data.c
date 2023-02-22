@@ -6,11 +6,11 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:55:03 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/20 10:37:17 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:42:51 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../includes/minirt.h"
 
 char	*ft_data(char *argv[])
 {

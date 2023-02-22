@@ -1,10 +1,10 @@
-#include "./includes/camera.h"
-#include "./includes/color.h"
-#include "./includes/file_reader.h"
-#include "./includes/geometry.h"
-#include "./includes/raytracer.h"
-#include "./includes/vector.h"
-#include "./includes/ft_process.h"
+#include "../includes/camera.h"
+#include "../includes/color.h"
+#include "../includes/file_reader.h"
+#include "../includes/geometry.h"
+#include "../includes/raytracer.h"
+#include "../includes/vector.h"
+#include "../includes/ft_process.h"
 
 int ft_ambient(char *buff, t_scene *s_scene)
 {

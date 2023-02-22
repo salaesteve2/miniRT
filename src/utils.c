@@ -6,11 +6,11 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 08:58:43 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/22 09:03:41 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:41:44 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../includes/minirt.h"
 
 int	ft_strncmp_rev(const char *s1, const char *s2, size_t n)
 {

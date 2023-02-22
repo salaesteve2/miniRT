@@ -1,9 +1,9 @@
-#include "./includes/camera.h"
-#include "./includes/color.h"
-#include "./includes/file_reader.h"
-#include "./includes/geometry.h"
-#include "./includes/raytracer.h"
-#include "./includes/vector.h"
+#include "../includes/camera.h"
+#include "../includes/color.h"
+#include "../includes/file_reader.h"
+#include "../includes/geometry.h"
+#include "../includes/raytracer.h"
+#include "../includes/vector.h"
 
 int     nbrlen(long nb)
 {
