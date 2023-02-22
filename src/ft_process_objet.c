@@ -13,8 +13,6 @@ double dot_prod(t_vector u, t_vector v)
     return(u.x * v.x + u.y * v.y + u.z * v.z);
 }
 
-
-
 double magnitude(t_vector u)
 {
 	return(sqrt(dot_prod(u,u)));

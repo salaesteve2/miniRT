@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/22 09:42:03 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/22 12:52:52 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ typedef struct		s_img
 	unsigned char	*data;
 }					t_img;
 
-// Creación ventana
-
 typedef struct s_s
 {
 	void	*mlx;
@@ -48,8 +46,6 @@ int	key_hook(int keycode, t_s *window)
 		ft_exit_hook(window);
 	return (0);
 }
-
-//
 
 void	ft_free_all(t_s *window, t_img *img)
 {
@@ -103,6 +99,7 @@ int	ft_parser(char **argv, t_conf *conf)
 {
 	char	*s;
 	char	**lines;
+	t_list  *x;
 
 	s = ft_data(argv);
 	if (!s)
@@ -112,12 +109,51 @@ int	ft_parser(char **argv, t_conf *conf)
 	}
 	lines = ft_split(s, '\n');
 	*conf = ft_process(lines);
-	printf("%i\n", conf->flag.error);
 	if (conf->flag.error != 0)
 	{
 		printf("ERROR");
 		return (1);
 	}
+
+	////PRINTEO AUXILIAR////
+	//
+	printf("\nradio de light:%f\nejes x, y, z de light:%f, %f, %f\n", conf->my_scene.light_lst.radius, conf->my_scene.light_lst.pos.x, conf->my_scene.light_lst.pos.y, conf->my_scene.light_lst.pos.z);
+	printf("\nCamera grades:%f\n", conf->my_scene.cam_lst.grades);
+	printf("Camera view(x,y,z):%f, %f, %f\n", conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.view.z);
+	printf("Camera position(x,y,z):%f, %f, %f\n", conf->my_scene.cam_lst.pos.x, conf->my_scene.cam_lst.pos.y, conf->my_scene.cam_lst.pos.z);
+
+	x = conf->my_scene.obj_lst;
+	while (x->content)
+	{
+		t_objet *aux =  (t_objet *)x->content;
+		printf("\ntype obj: %i\n", aux->type);
+		if (aux->type == 1)
+		{
+			t_sphere	*a = (t_sphere *)aux->objet;
+			printf("sphereradio: %f\n", a->radius);
+			printf("spherecenter (x,y,z): %f,%f,%f\n", a->center.x, a->center.y, a->center.z);
+			printf("spherecolor (r,g,b): %i,%i,%i\n", a->color.r, a->color.g, a->color.b);
+		}
+		else if (aux->type == 2)
+        {
+            t_m_plane    *a = (t_m_plane *)aux->objet;
+            printf("plane normal vector (x,y,z): %f,%f,%f\n", a->normal.x, a->normal.y, a->normal.z);
+            printf("plane point (x,y,z): %f,%f,%f\n", a->point.x, a->point.y, a->point.z);
+            printf("plane color (r,g,b): %i,%i,%i\n", a->color.r, a->color.g, a->color.b);
+		}
+		else if (aux->type == 3)
+        {
+            t_cylinder    *a = (t_cylinder *)aux->objet;
+            printf("cylinder direction vector (x,y,z): %f,%f,%f\n", a->dir.x, a->dir.y, a->dir.z);
+            printf("cylinder center (x,y,z): %f,%f,%f\n", a->center.x, a->center.y, a->center.z);
+			printf("cylinder radio: %f and height: %f\n", a->radius, a->height);
+            printf("cylinder color (r,g,b): %i,%i,%i\n", a->color.r, a->color.g, a->color.b);
+        }
+		x = x->next;
+	}
+	printf("\n");
+
+	////
 	return (0);
 }
 

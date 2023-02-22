@@ -68,7 +68,6 @@ int ft_objet(char *buf, t_conf *conf)
 
     if (( obj->type == SPHERE && ft_process_range_sphere(param) == 1) || ( obj->type == PLANE && ft_process_range_flat(param) == 1) || ( obj->type == CYLINDER && ft_process_range_cylinder(param) == 1))
     {
-		printf("OBtype");
         free(param);
         free(obj);
         return (1);
@@ -79,7 +78,6 @@ int ft_objet(char *buf, t_conf *conf)
 		free(param);
     }
     ft_lstadd_front(&(conf->my_scene.obj_lst), ft_lstnew(obj));
-    //¿free obj? (por el uso de lst_new)
     return (0);
 
 }
@@ -149,17 +147,10 @@ t_conf  ft_process(char **buff)
 	conf->my_scene.cam_lst.pos.x = 0;
 	conf->my_scene.cam_lst.pos.y = 0;
 	conf->my_scene.cam_lst.pos.z = 0;
+	conf->my_scene.obj_lst = malloc(sizeof(t_list));
+	conf->my_scene.obj_lst->content = NULL;
+	conf->my_scene.obj_lst->next = NULL;
 
-	//conf->my_scene.cam_lst.dist = 0;
-   	/*conf->my_scene.cam_lst.display.pos.z = 0;
-   	conf->my_scene.cam_lst.display.pos.x = 0;
-   	conf->my_scene.cam_lst.display.pos.y = 0;
-   	conf->my_scene.cam_lst.display.x_axis.x = 0;
-	conf->my_scene.cam_lst.display.x_axis.y = 0;
-	conf->my_scene.cam_lst.display.x_axis.z = 0;
-	conf->my_scene.cam_lst.display.y_axis.x = 0;
-	conf->my_scene.cam_lst.display.y_axis.y = 0;
-	conf->my_scene.cam_lst.display.y_axis.z = 0;*/
     x = 0;
     i = 0;
     error = 0;
@@ -190,9 +181,6 @@ t_conf  ft_process(char **buff)
 		}
         i++;
         x = 0;
-		//////////
-		printf("BBB%i\n", error);
-		////////
     }
 	if (error != 0)
 		{
