@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:50 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/21 09:06:08 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:03:55 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,17 @@
 # include <stdlib.h>
 # include <math.h>
 # include <fcntl.h>
-# include "../src/get_next_line/get_next_line.h"
-# include "../lib/mlx/mlx.h"
-# include "../lib/libft/libft.h"
+# include "get_next_line/get_next_line.h"
+# include "mlx/mlx.h"
+# include "libft/libft.h"
 
 char	*ft_data(char *argv[]);
-//ft_process_range.c
 int		ft_process_range_ambient_light(double *nb);
 int		ft_process_range_camara(double *nb);
 int		ft_process_range_light(double *nb);
 int		ft_process_range_sphere(double *nb);
 int		ft_process_range_flat(double *nb);
 int		ft_process_range_cylinder(double *nb);
-//utils.c
 int		ft_strncmp_rev(const char *s1, const char *s2, size_t n);
 
 #endif

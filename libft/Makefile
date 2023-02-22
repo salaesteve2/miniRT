@@ -6,7 +6,7 @@
 #    By: sasalama <sasalama@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 10:56:02 by sasalama          #+#    #+#              #
-#    Updated: 2022/02/07 09:32:14 by sasalama         ###   ########.fr        #
+#    Updated: 2023/02/21 09:36:26 by valarcon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ${NAME}:    ${OBJS}
 				ranlib ${NAME}
 bonus:      ${bonus2}
 ${bonus2}:	${OBJS} ${OBJB}
-				${AR}  ${NAME} ${OBJB}
+				${AR}  ${NAME} ${OBJB} ${OBJS}
 				ranlib ${NAME}
 all:        ${NAME}
 clean:

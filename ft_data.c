@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_data.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 08:58:43 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/21 09:03:23 by sasalama         ###   ########.fr       */
+/*   Created: 2023/02/17 09:55:03 by sasalama          #+#    #+#             */
+/*   Updated: 2023/02/20 10:37:17 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "minirt.h"
 
-int	ft_strncmp_rev(const char *s1, const char *s2, size_t n)
+char	*ft_data(char *argv[])
 {
-	unsigned int	i1;
-	unsigned int	i2;
+	int		fd;
+	char	*s;
+	char	*s2;
+	char	*tmp;
+	char	*tmp2;
 
-	if (!(s1 || s2))
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
 		return (0);
-	if (!(s1 && s2))
-		return (-1);
-	if (s1 == s2)
+	s = get_next_line(fd, 1);
+	s2 = malloc(1);
+	if (!s)
 		return (0);
-	i1 = ft_strlen(s1) - 1;
-	i2 = ft_strlen(s2) - 1;
-	while (i1 + 1 && i2 + 1 && s1[i1] == s2[i2] && n--)
+	while (s)
 	{
-		i1--;
-		i2--;
+		tmp = s;
+		tmp2 = s2;
+		s2 = ft_strjoin(s2, s);
+		free(tmp2);
+		free(tmp);
+		s = get_next_line(fd, 1);
 	}
-	if (n)
-		return ((unsigned char)s1[i1] - (unsigned char)s2[i1]);
-	return (0);
+	close(fd);
+	return (s2);
 }
