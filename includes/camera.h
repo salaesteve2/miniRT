@@ -14,8 +14,11 @@ typedef struct  s_screen
 typedef struct  s_camera
 {
 	t_vector	view;
+	 t_vector    h;
+	  t_vector    w;
     t_vector    pos;
 	double		grades;
+	double		radian;
    /*	t_screen    display;
     double      dist;*/
 }               t_camera;

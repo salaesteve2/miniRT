@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 09:33:13 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 11:30:54 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,54 @@ int	ft_parser(char **argv, t_conf *conf)
 	}
 
 	////PRINTEO AUXILIAR////
+	conf->my_scene.cam_lst.radian = (conf->my_scene.cam_lst.grades * 3.14159265359) / 180;
+	conf->my_scene.light_lst.pos.x = conf->my_scene.light_lst.pos.x - conf->my_scene.cam_lst.pos.x;
+	conf->my_scene.light_lst.pos.y = conf->my_scene.light_lst.pos.y - conf->my_scene.cam_lst.pos.y;
+	conf->my_scene.light_lst.pos.z = conf->my_scene.light_lst.pos.z - conf->my_scene.cam_lst.pos.z;
+
+	x = conf->my_scene.obj_lst;
+    while (x->content)
+    {
+        t_objet *aux =  (t_objet *)x->content;
+        if (aux->type == 1)
+        {
+            t_sphere    *a = (t_sphere *)aux->objet;
+            a->center.x = a->center.x - conf->my_scene.cam_lst.pos.x;
+			a->center.y = a->center.y - conf->my_scene.cam_lst.pos.y;
+			a->center.z = a->center.z - conf->my_scene.cam_lst.pos.z;
+        }
+        else if (aux->type == 2)
+        {
+            t_cylinder    *c = (t_cylinder *)aux->objet;
+			c->center.x = c->center.x - conf->my_scene.cam_lst.pos.x;
+            c->center.y = c->center.y - conf->my_scene.cam_lst.pos.y;
+            c->center.z = c->center.z - conf->my_scene.cam_lst.pos.z;
+			c->dir = normalize(c->dir);
+        }
+        else if (aux->type == 3)
+        {
+            t_m_plane    *b = (t_m_plane *)aux->objet;
+			b->point.x = b->point.x - conf->my_scene.cam_lst.pos.x;
+            b->point.y = b->point.y - conf->my_scene.cam_lst.pos.y;
+            b->point.z = b->point.z - conf->my_scene.cam_lst.pos.z;
+			b->normal = normalize(b->normal);
+        }
+        x = x->next;
+    }
+	conf->my_scene.cam_lst.pos.x = 0;
+	conf->my_scene.cam_lst.pos.y = 0;
+	conf->my_scene.cam_lst.pos.z = 0;
+	conf->my_scene.cam_lst.view = normalize(conf->my_scene.cam_lst.view);
+	conf->my_scene.cam_lst.h =  normalize(provec(conf->my_scene.cam_lst.view, vec(0, 0, 1)));
+	 conf->my_scene.cam_lst.w =  normalize(provec(conf->my_scene.cam_lst.view, vec(1, 0, 0)));
+
+	
 	//
 	printf("\nradio de light:%f\nejes x, y, z de light:%f, %f, %f\n", conf->my_scene.light_lst.radius, conf->my_scene.light_lst.pos.x, conf->my_scene.light_lst.pos.y, conf->my_scene.light_lst.pos.z);
-	printf("\nCamera grades:%f\n", conf->my_scene.cam_lst.grades);
+	printf("\nCamera grades:%f\n camera radianes: %f\n", conf->my_scene.cam_lst.grades, conf->my_scene.cam_lst.radian);
 	printf("Camera view(x,y,z):%f, %f, %f\n", conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.view.z);
 	printf("Camera position(x,y,z):%f, %f, %f\n", conf->my_scene.cam_lst.pos.x, conf->my_scene.cam_lst.pos.y, conf->my_scene.cam_lst.pos.z);
+	 printf("Camera vectors h(xyz) w(xyz): %f %f %f , %f %f %f \n", conf->my_scene.cam_lst.h.x, conf->my_scene.cam_lst.h.y, conf->my_scene.cam_lst.h.z, conf->my_scene.cam_lst.w.x, conf->my_scene.cam_lst.w.y, conf->my_scene.cam_lst.w.z);
 
 	x = conf->my_scene.obj_lst;
 	while (x->content)

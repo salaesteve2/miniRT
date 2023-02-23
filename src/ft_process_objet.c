@@ -30,6 +30,18 @@ t_vector add(t_vector u, t_vector v)
 }
 
 
+t_vector provec(t_vector u, t_vector v)
+{
+	double x;
+	double y;
+	double z;
+
+	x = u.y * v.z - u.z * v.y;
+	y = - (u.x * v.z - u.z * v.x);
+	z = u.x * v.y - u.y * v.x;
+	return(vec(x, y, z));
+}
+
 t_vector normalize(t_vector u)
 {
 	return (prod(u, 1.0 / magnitude(u)));
