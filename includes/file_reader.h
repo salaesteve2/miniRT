@@ -28,12 +28,19 @@ typedef struct	s_mlx
 	int			endian;
 }				t_mlx;
 
+typedef struct s_pixel
+{
+	int	x;
+	int	y;
+
+}				t_pixel;
 typedef struct  s_conf
 {
     t_scene     my_scene;
     t_camera    my_camera;
     t_mlx       mlx;
     t_flag      flag;
+	t_pixel		my_pixel;
 }               t_conf;
 
 #endif

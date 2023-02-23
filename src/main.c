@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 09:27:06 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 09:33:13 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,21 @@ void	ft_free_all(t_s *window, t_img *img)
 void	ft_make_img(t_img *img, t_conf *conf)
 {
 	int	(*tab)[1080][1];
-	int	x;
-	int	y;
 
-	x = 0;
 	tab = (void *)img->data;
-	while (x < 1080)
+	conf->my_pixel.x = 0;
+	conf->my_pixel.y = 1;
+	while (conf->my_pixel.x < 1080)
 	{
-		y = 0;
-		while (y < 720)
+		conf->my_pixel.y = 0;
+		while (conf->my_pixel.y < 720)
 		{
 			//gestionar los pixeles(color, posicion, etc)
-			*tab[y][x] = 0xfafad2;
-			y++;
+			*tab[conf->my_pixel.y][conf->my_pixel.x] = 0xfafad2;
+			conf->my_pixel.y++;
 		}
-		x++;
+		conf->my_pixel.x++;
 	}
-	(void)conf;
 }
 
 void	ft_mlx_init(t_conf *conf)
