@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 11:30:54 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/02/23 12:23:38 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,20 @@ void	ft_free_all(t_s *window, t_img *img)
 void	ft_make_img(t_img *img, t_conf *conf)
 {
 	int	(*tab)[1080][1];
+	int	color;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
-	conf->my_pixel.y = 1;
 	while (conf->my_pixel.x < 1080)
 	{
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
 			//gestionar los pixeles(color, posicion, etc)
-			*tab[conf->my_pixel.y][conf->my_pixel.x] = 0xfafad2;
+			//ft_ray(conf->my_pixel.x, conf->my_pixel.y);
+			//color = ft_color();
+			color = 0xfafad2;
+			*tab[conf->my_pixel.y][conf->my_pixel.x] = color;
 			conf->my_pixel.y++;
 		}
 		conf->my_pixel.x++;
@@ -88,6 +91,7 @@ void	ft_mlx_init(t_conf *conf)
 	ft_make_img(img, conf);
 	window->mlx_win = mlx_new_window(window->mlx, 1080, 720, "MiniRT");
 	mlx_put_image_to_window(window->mlx, window->mlx_win, img->img, 0, 0);
+	mlx_destroy_image(window->mlx, img->img);
 	mlx_key_hook(window->mlx_win, key_hook, window);
 	mlx_hook(window->mlx_win, 17, 1L << 17, ft_exit_hook, window);
 	mlx_loop(window->mlx);
