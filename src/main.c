@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 12:23:38 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 12:27:48 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ void	ft_make_img(t_img *img, t_conf *conf)
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
-			//gestionar los pixeles(color, posicion, etc)
-			//ft_ray(conf->my_pixel.x, conf->my_pixel.y);
-			//color = ft_color();
+			//gestionar los pixeles(color, luz, si hay objeto, etc)
+			//ray = ft_ray(conf);
+			//impact = ft_impact(conf);
+			//color = ft_color(conf);
 			color = 0xfafad2;
 			*tab[conf->my_pixel.y][conf->my_pixel.x] = color;
 			conf->my_pixel.y++;
