@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 09:01:12 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 09:27:06 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,23 @@ void	ft_free_all(t_s *window, t_img *img)
 
 void	ft_make_img(t_img *img, t_conf *conf)
 {
-	(void)img;
+	int	(*tab)[1080][1];
+	int	x;
+	int	y;
+
+	x = 0;
+	tab = (void *)img->data;
+	while (x < 1080)
+	{
+		y = 0;
+		while (y < 720)
+		{
+			//gestionar los pixeles(color, posicion, etc)
+			*tab[y][x] = 0xfafad2;
+			y++;
+		}
+		x++;
+	}
 	(void)conf;
 }
 
