@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 12:27:48 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 12:31:57 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	ft_make_img(t_img *img, t_conf *conf)
 		while (conf->my_pixel.y < 720)
 		{
 			//gestionar los pixeles(color, luz, si hay objeto, etc)
-			//ray = ft_ray(conf);
-			//impact = ft_impact(conf);
-			//color = ft_color(conf);
+			//ray = ft_ray(conf);(Determina pixel a pixel si incide un rayo)
+			//impact = ft_impact(conf);(Determina pixel a pixel si hay objeto)
+			//color = ft_color(conf);(Si hay objeto determina el color segun la luz)
 			color = 0xfafad2;
 			*tab[conf->my_pixel.y][conf->my_pixel.x] = color;
 			conf->my_pixel.y++;
