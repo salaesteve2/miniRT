@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 08:59:39 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/23 09:01:12 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,6 @@ int	ft_parser(char **argv, t_conf *conf)
 			printf("spherecenter (x,y,z): %f,%f,%f\n", a->center.x, a->center.y, a->center.z);
 			printf("spherecolor (r,g,b): %i,%i,%i\n", a->color.r, a->color.g, a->color.b);
 		}
-		else if (aux->type == 3)
-        {
-            t_m_plane    *b = (t_m_plane *)aux->objet;
-            printf("plane normal vector (x,y,z): %f,%f,%f\n", b->normal.x, b->normal.y, b->normal.z);
-            printf("plane point (x,y,z): %f,%f,%f\n", b->point.x, b->point.y, b->point.z);
-            printf("plane color (r,g,b): %i,%i,%i\n", b->color.r, b->color.g, b->color.b);
-		}
 		else if (aux->type == 2)
         {
             t_cylinder    *c = (t_cylinder *)aux->objet;
@@ -149,6 +142,13 @@ int	ft_parser(char **argv, t_conf *conf)
 			printf("cylinder radio: %f and height: %f\n", c->radius, c->height);
             printf("cylinder color (r,g,b): %i,%i,%i\n", c->color.r, c->color.g, c->color.b);
         }
+		else if (aux->type == 3)
+        {
+            t_m_plane    *b = (t_m_plane *)aux->objet;
+            printf("plane normal vector (x,y,z): %f,%f,%f\n", b->normal.x, b->normal.y, b->normal.z);
+            printf("plane point (x,y,z): %f,%f,%f\n", b->point.x, b->point.y, b->point.z);
+            printf("plane color (r,g,b): %i,%i,%i\n", b->color.r, b->color.g, b->color.b);
+		}
 		x = x->next;
 	}
 	printf("\n");
