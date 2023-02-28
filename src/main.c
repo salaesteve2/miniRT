@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/23 12:33:39 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/28 09:05:08 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 #include "../includes/vector.h"
 #include "../includes/ft_process.h"
 
-typedef struct		s_img
+typedef struct s_img
 {
 	void			*img;
- 	int				bits_per_pixel;
+	int				bits_per_pixel;
 	int				size_line;
 	int				endian;
 	unsigned char	*data;
-}					t_img;
+}				t_img;
 
 typedef struct s_s
 {
@@ -52,6 +52,8 @@ void	ft_free_all(t_s *window, t_img *img)
 	free(window->mlx);
 	free(window->mlx_win);
 	free(window);
+	free(img->img);
+	free(img->data);
 	free(img);
 }
 
@@ -118,7 +120,7 @@ int	ft_parser(char **argv, t_conf *conf)
 {
 	char	*s;
 	char	**lines;
-	t_list  *x;
+	t_list	*x;
 
 	s = ft_data(argv);
 	if (!s)
