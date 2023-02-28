@@ -127,13 +127,13 @@ double      *get_params(const char *buf, int size)
     return (param);
 }
 
-t_color     ft_color(double r, double g, double b)
+t_rgb     ft_color(double r, double g, double b)
 {
-    t_color     color;
+    t_rgb     color;
 
-    color.r = r;
-    color.g = g;
-    color.b = b;
+    color.red = r;
+    color.green = g;
+    color.blue = b;
     return (color);
 }
 

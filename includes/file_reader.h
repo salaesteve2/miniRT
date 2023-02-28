@@ -3,6 +3,7 @@
 //# include "../srcs/configuration/gnl/get_next_line.h"
 # include "vector.h"
 # include "raytracer.h"
+#include "minirt.h"
 
 typedef struct  s_flag
 {
@@ -32,6 +33,7 @@ typedef struct s_pixel
 {
 	int	x;
 	int	y;
+	int	color;
 
 }				t_pixel;
 typedef struct  s_conf
@@ -42,5 +44,7 @@ typedef struct  s_conf
     t_flag      flag;
 	t_pixel		my_pixel;
 }               t_conf;
+
+void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf);
 
 #endif

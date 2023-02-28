@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:50 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/22 09:44:28 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:04:50 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int		ft_process_range_sphere(double *nb);
 int		ft_process_range_flat(double *nb);
 int		ft_process_range_cylinder(double *nb);
 int		ft_strncmp_rev(const char *s1, const char *s2, size_t n);
+
 
 #endif

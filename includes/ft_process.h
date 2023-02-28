@@ -3,7 +3,7 @@
 
 t_conf  ft_process(char **buff);
 double      *get_params(const char *buf, int size);
-t_color     ft_color(double r, double g, double b);
+t_rgb     ft_color(double r, double g, double b);
 t_vector vec(double x, double y, double z);
 long double ft_atod(const char *str);
 void		ft_objetinit(double *paramsin, t_objet *obj);

@@ -4,12 +4,13 @@
 # include "camera.h"
 # include "minirt.h"
 # include "../lib/libft/libft.h"
+# include "file_reader.h"
 
 typedef struct  s_light
 {
     t_vector    pos;
     double      radius;
-    t_color     color;
+    t_rgb     color;
 }               t_light;
 
 typedef struct  s_scene

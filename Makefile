@@ -1,4 +1,5 @@
-SRCS = src/main.c src/ft_data.c src/get_next_line/get_next_line.c src/ft_process_range.c src/ft_process_range2.c src/ft_process_utils.c	src/ft_process.c src/ft_process_objet.c src/ft_process_camera.c src/utils.c
+SRCS = src/main.c src/ft_data.c src/get_next_line/get_next_line.c src/ft_process_range.c src/ft_process_range2.c src/ft_process_utils.c	src/ft_process.c src/ft_process_objet.c src/ft_process_camera.c src/utils.c \
+		src/ft_point.c
 
 SRCBS = 
 

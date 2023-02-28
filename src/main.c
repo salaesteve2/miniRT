@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/28 09:05:08 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:12:16 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,25 @@ void	ft_free_all(t_s *window, t_img *img)
 void	ft_make_img(t_img *img, t_conf *conf)
 {
 	int	(*tab)[1080][1];
-	int	color;
+	t_list	*obj;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
+	obj = conf->my_scene.obj_lst->next->next;
 	while (conf->my_pixel.x < 1080)
 	{
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
+			//conf->my_pixel.color = 0xfafad2;
+			ft_point(0, 1, 0, (t_objet *)obj->content, conf);
 			//gestionar los pixeles(color, luz, si hay objeto, etc)
 			//ray = ft_ray(conf);(Determina pixel a pixel si incide un rayo según la cámara)
 			//impact = ft_impact(conf);(Determina pixel a pixel si hay objeto)
 			//color = ft_color(conf);(Si hay objeto determina el color segun la luz)
-			color = 0xfafad2;
-			*tab[conf->my_pixel.y][conf->my_pixel.x] = color;
+			*tab[conf->my_pixel.y][conf->my_pixel.x] = conf->my_pixel.color;
 			conf->my_pixel.y++;
+			//obj = obj->next;
 		}
 		conf->my_pixel.x++;
 	}
@@ -196,7 +199,7 @@ int	ft_parser(char **argv, t_conf *conf)
 			t_sphere	*a = (t_sphere *)aux->objet;
 			printf("sphereradio: %f\n", a->radius);
 			printf("spherecenter (x,y,z): %f,%f,%f\n", a->center.x, a->center.y, a->center.z);
-			printf("spherecolor (r,g,b): %i,%i,%i\n", a->color.r, a->color.g, a->color.b);
+			printf("spherecolor (r,g,b): %i,%i,%i\n", a->color.red, a->color.green, a->color.blue);
 		}
 		else if (aux->type == 2)
         {
@@ -204,14 +207,14 @@ int	ft_parser(char **argv, t_conf *conf)
             printf("cylinder direction vector (x,y,z): %f,%f,%f\n", c->dir.x, c->dir.y, c->dir.z);
             printf("cylinder center (x,y,z): %f,%f,%f\n", c->center.x, c->center.y, c->center.z);
 			printf("cylinder radio: %f and height: %f\n", c->radius, c->height);
-            printf("cylinder color (r,g,b): %i,%i,%i\n", c->color.r, c->color.g, c->color.b);
+            printf("cylinder color (r,g,b): %i,%i,%i\n", c->color.red, c->color.green, c->color.blue);
         }
 		else if (aux->type == 3)
         {
             t_m_plane    *b = (t_m_plane *)aux->objet;
             printf("plane normal vector (x,y,z): %f,%f,%f\n", b->normal.x, b->normal.y, b->normal.z);
             printf("plane point (x,y,z): %f,%f,%f\n", b->point.x, b->point.y, b->point.z);
-            printf("plane color (r,g,b): %i,%i,%i\n", b->color.r, b->color.g, b->color.b);
+            printf("plane color (r,g,b): %i,%i,%i\n", b->color.red, b->color.green, b->color.blue);
 		}
 		x = x->next;
 	}

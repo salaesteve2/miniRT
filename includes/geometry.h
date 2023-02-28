@@ -12,7 +12,7 @@ typedef struct  s_sphere
 {
     t_vector    center;
     double      radius;
-    t_color     color;
+    t_rgb     color;
 }               t_sphere;
 
 typedef struct  s_cylinder
@@ -21,7 +21,7 @@ typedef struct  s_cylinder
     t_vector    center;
     double      radius;
     double      height;
-    t_color     color;
+    t_rgb     color;
 }               t_cylinder;
 
 /*typedef struct  s_line
@@ -34,7 +34,7 @@ typedef struct  s_m_plane
 {
     t_vector    point;
     t_vector    normal;
-    t_color     color;
+    t_rgb     color;
 }               t_m_plane;
 
 typedef struct  s_objet
