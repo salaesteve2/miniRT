@@ -11,6 +11,10 @@ int ft_ambient(char *buff, t_scene *s_scene)
     double *params;
 
 
+    /*if (s_scene->ambient.radius != 0 || s_scene->ambient.color.red != 0 || s_scene->ambient.color.green != 0 || s_scene->ambient.color.blue != 0)
+    {
+        return (2);
+    }*/
     params = get_params(buff, 4);
 	 if (params == NULL)
         return (1);
@@ -18,10 +22,6 @@ int ft_ambient(char *buff, t_scene *s_scene)
     {
         free(params);
         return (1);
-    }
-    else if (s_scene->ambient.radius != 0 || s_scene->ambient.color.red != 0 || s_scene->ambient.color.green != 0 || s_scene->ambient.color.blue != 0)
-    {
-        return (2);
     }
     else
     {

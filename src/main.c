@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/28 12:12:16 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:06:16 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,39 @@ void	ft_free_all(t_s *window, t_img *img)
 
 void	ft_make_img(t_img *img, t_conf *conf)
 {
-	int	(*tab)[1080][1];
-	t_list	*obj;
+	int				(*tab)[1080][1];
+	t_list			*obj;
+	t_list			*tmp;
+	t_point			*point;
+	int				s;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
-	obj = conf->my_scene.obj_lst->next->next;
+	obj = conf->my_scene.obj_lst;
+	point = malloc(sizeof(double) * 3);
 	while (conf->my_pixel.x < 1080)
 	{
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
-			//conf->my_pixel.color = 0xfafad2;
-			ft_point(0, 1, 0, (t_objet *)obj->content, conf);
-			//gestionar los pixeles(color, luz, si hay objeto, etc)
-			//ray = ft_ray(conf);(Determina pixel a pixel si incide un rayo según la cámara)
-			//impact = ft_impact(conf);(Determina pixel a pixel si hay objeto)
-			//color = ft_color(conf);(Si hay objeto determina el color segun la luz)
+			if (ft_impact(conf, point) == 1)
+			{
+				if (ft_closet(conf, (t_objet *)obj->content) == 1)
+					ft_point(point, (t_objet *)obj->content, conf);
+				else
+				{
+					tmp = obj;
+					ft_lstadd_back(&obj->next, obj);
+					obj = tmp->next;
+				}
+			}
+			else
+			{
+				s = rgb_to_int(conf->my_scene.ambient.color);
+				conf->my_pixel.color = s;
+			}
 			*tab[conf->my_pixel.y][conf->my_pixel.x] = conf->my_pixel.color;
 			conf->my_pixel.y++;
-			//obj = obj->next;
 		}
 		conf->my_pixel.x++;
 	}
@@ -183,6 +196,7 @@ int	ft_parser(char **argv, t_conf *conf)
 
 	
 	//
+	printf("Luz ambient radio: %f\ncolor: %d, %d, %d\n", conf->my_scene.ambient.radius, conf->my_scene.ambient.color.red, conf->my_scene.ambient.color.green, conf->my_scene.ambient.color.blue);
 	printf("\nradio de light:%f\nejes x, y, z de light:%f, %f, %f\n", conf->my_scene.light_lst.radius, conf->my_scene.light_lst.pos.x, conf->my_scene.light_lst.pos.y, conf->my_scene.light_lst.pos.z);
 	printf("\nCamera grades:%f\n camera radianes: %f\n", conf->my_scene.cam_lst.grades, conf->my_scene.cam_lst.radian);
 	printf("Camera view(x,y,z):%f, %f, %f\n", conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.view.z);

@@ -45,6 +45,16 @@ typedef struct  s_conf
 	t_pixel		my_pixel;
 }               t_conf;
 
-void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf);
+typedef struct  s_point
+{
+    double      x;
+    double      y;
+    double      z;
+}               t_point;
+
+void	ft_point(t_point *point, t_objet *obj, t_conf *conf);
+int		rgb_to_int(const t_rgb rgb);
+int		ft_impact(t_conf *conf, t_point *point);
+int		ft_closet(t_conf *conf, t_objet *obj);
 
 #endif

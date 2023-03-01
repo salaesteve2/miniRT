@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/28 12:16:33 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/01 09:29:21 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	rgb_to_int(const t_rgb rgb)
 	return(rgb.red << 16 | rgb.green << 8 | rgb.blue);
 }
 
-void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf)
+void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 {
 	double			pe;
 	double			pe2;
@@ -71,9 +71,9 @@ void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf)
 	{
 		aux = (t_sphere *)obj->objet;
 		///la normal(vector perpendicular) al punto, se usará para la luz
-		perp = vec(x - aux->center.x, y - aux->center.y, z - aux->center.z);
+		perp = vec(point->x - aux->center.x, point->y - aux->center.y, point->z - aux->center.z);
 		//el vector del origen/camara al punto, necesario para el tamaño y ubicacion del pixel
-		origpoint = vec(x, y, z);
+		origpoint = vec(point->x, point->y, point->z);
 				///producto escalar de vect al obj y eje de pantalla / distancia = seno del angulo de visión.
 				/////heidht
 		pe = ft_escalar_prod(conf->my_camera.h, origpoint);
@@ -90,7 +90,7 @@ void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf)
 		{
 			///put point at coordz coordy of the screen//
 			////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombra
-			intensity = ft_escalar_prod(vec(x - conf->my_scene.light_lst.pos.x, y - conf->my_scene.light_lst.pos.y, z - conf->my_scene.light_lst.pos.z), perp);
+			intensity = ft_escalar_prod(vec(point->x - conf->my_scene.light_lst.pos.x, point->y - conf->my_scene.light_lst.pos.y, point->z - conf->my_scene.light_lst.pos.z), perp);
 			rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux->color.red * intensity;
 			rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux->color.green * intensity;
 			rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux->color.blue * intensity;
@@ -116,24 +116,24 @@ void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf)
 	{
 		aux2 = (t_m_plane *)obj->objet;
 		//el vector del origen/camara al punto, necesario para el tamaño y ubicacion del pixel
-		origpoint = vec(x, y, z);
+		origpoint = vec(point->x, point->y, point->z);
 				///producto escalar de vect al obj y eje de pantalla / distancia = seno del angulo de visión.
 				/////heidht
 		pe = ft_escalar_prod(conf->my_camera.h, origpoint);
 		pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 		sen = pe / (ft_module(origpoint));
 		sen2 = pe2 / (ft_module(origpoint));
-		coordz = (sen / sin(conf->my_camera.radian)) * 1080;
+		coordz = (sen / sin(conf->my_camera.radian)) * 540;
 		if (coordz > 360 || coordz < -360)
 			return ;
-		coordy = (sen2 / sin(conf->my_camera.radian)) * 1080;
+		coordy = (sen2 / sin(conf->my_camera.radian)) * 540;
 		if (coordy > 540 || coordy < -540)
 			return ;
 		else
 		{
 			///put point at coordz coordy of the screen//
 			////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombras aún
-			intensity = ft_escalar_prod(vec(x - conf->my_scene.light_lst.pos.x, y - conf->my_scene.light_lst.pos.y, z - conf->my_scene.light_lst.pos.z), aux2->normal);
+			intensity = ft_escalar_prod(vec(point->x - conf->my_scene.light_lst.pos.x, point->y - conf->my_scene.light_lst.pos.y, point->z - conf->my_scene.light_lst.pos.z), aux2->normal);
 			rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux2->color.red * intensity;
 			rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux2->color.green * intensity;
 			rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux2->color.blue * intensity;
@@ -145,5 +145,4 @@ void	ft_point(double x, double y, double z, t_objet *obj, t_conf *conf)
 			}
 		}
 	}
-
 }
