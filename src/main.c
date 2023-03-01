@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 11:06:16 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/01 12:12:22 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,32 @@ void	ft_free_all(t_s *window, t_img *img)
 void	ft_make_img(t_img *img, t_conf *conf)
 {
 	int				(*tab)[1080][1];
-	t_list			*obj;
-	t_list			*tmp;
+	t_objet			*obj;
+//	t_list			*tmp;
 	t_point			*point;
 	int				s;
+	double			vecg;
+	double			vecp;
+	t_vector		vision;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
-	obj = conf->my_scene.obj_lst;
 	point = malloc(sizeof(double) * 3);
 	while (conf->my_pixel.x < 1080)
 	{
+		vecg = conf->my_pixel.x / 540 * tan(conf->my_scene.cam_lst.radian);
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
-			if (ft_impact(conf, point) == 1)
+			vecp = conf->my_pixel.y / 360 * tan(conf->my_scene.cam_lst.radian);
+			vision = vec(conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg + conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg + conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg + conf->my_scene.cam_lst.view.z);
+			////////
+			if (ft_impact(conf, vision) == 1)
 			{
-				if (ft_closet(conf, (t_objet *)obj->content) == 1)
-					ft_point(point, (t_objet *)obj->content, conf);
-				else
-				{
-					tmp = obj;
-					ft_lstadd_back(&obj->next, obj);
-					obj = tmp->next;
-				}
+				obj = ft_closet(conf, vision, point);
+				if (obj != NULL)
+					ft_point(point, obj, conf);
+				//////
 			}
 			else
 			{
@@ -171,11 +173,27 @@ int	ft_parser(char **argv, t_conf *conf)
         }
         else if (aux->type == 2)
         {
-            t_cylinder    *c = (t_cylinder *)aux->objet;
-			c->center.x = c->center.x - conf->my_scene.cam_lst.pos.x;
+			t_cylinder    *c = (t_cylinder *)aux->objet;
+            c->center.x = c->center.x - conf->my_scene.cam_lst.pos.x;
             c->center.y = c->center.y - conf->my_scene.cam_lst.pos.y;
             c->center.z = c->center.z - conf->my_scene.cam_lst.pos.z;
-			c->dir = normalize(c->dir);
+            c->dir = normalize(c->dir);
+            c->body.center = c->center;
+            c->body.dir = c->dir;
+            c->body.color = c->color;
+            c->body.height = c->height;
+            c->body.radius = c->radius;
+            c->base.color = c->color;
+            c->roof.color = c->color;
+            c->base.radius = c->radius;
+            c->base.normal = c->dir;
+            c->base.center = vec(c->center.x + c->dir.x * c->height / 2, c->center.y + c->dir.y * c->height / 2, c->center.z + c->dir.z * c->height / 2);
+            c->roof.radius = c->radius;
+            c->roof.normal = vec((-1) * c->dir.x, (-1) * c->dir.y, (-1) * c->dir.z);
+            c->roof.center = vec(c->center.x - c->dir.x * c->height / 2, c->center.y - c->dir.y * c->height / 2, c->center.z - c->dir.z * c->height / 2);
+            c->roof.plane_ecuation = vec((c->roof.normal.x * (1 - c->roof.center.x)), (c->roof.normal.y * (1 - c->roof.center.y)), (c->roof.normal.z * (1 - c->roof.center.z)));
+                            ///tal que el punto x,y,z estará en el plano de roof si x* plane_ecuation.x + y*planeecuation.y + z*planeecuat.z == 0
+            c->base.plane_ecuation = vec((c->base.normal.x * (1 - c->base.center.x)), (c->base.normal.y * (1 - c->base.center.y)), (c->base.normal.z * (1 - c->base.center.z)));
         }
         else if (aux->type == 3)
         {

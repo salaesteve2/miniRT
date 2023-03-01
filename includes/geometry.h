@@ -15,13 +15,34 @@ typedef struct  s_sphere
     t_rgb     color;
 }               t_sphere;
 
+typedef struct  s_circle
+{
+    t_vector    center;
+    double      radius;
+    t_vector    normal;
+    t_rgb    	color;
+    t_vector    plane_ecuation;
+}               t_circle;
+
+typedef struct  s_tube
+{
+    t_vector    center;
+    t_vector    dir;
+    double      radius;
+    double      height;
+    t_rgb	     color;
+}               t_tube;
+
 typedef struct  s_cylinder
 {
     t_vector    dir;
     t_vector    center;
     double      radius;
     double      height;
-    t_rgb     color;
+    t_rgb	     color;
+    t_circle    base;
+    t_circle    roof;
+    t_tube      body;
 }               t_cylinder;
 
 /*typedef struct  s_line

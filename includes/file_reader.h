@@ -54,7 +54,7 @@ typedef struct  s_point
 
 void	ft_point(t_point *point, t_objet *obj, t_conf *conf);
 int		rgb_to_int(const t_rgb rgb);
-int		ft_impact(t_conf *conf, t_point *point);
-int		ft_closet(t_conf *conf, t_objet *obj);
+int		ft_impact(t_conf *conf, t_vector vision);
+t_objet	*ft_closet(t_conf *conf, t_vector vision, t_point *point);
 
 #endif

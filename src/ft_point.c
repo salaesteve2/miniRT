@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 09:29:21 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:41:54 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ double	ft_distance_origin(double x, double y, double z)
 	return (res);
 }
 
+int ft_dist_point_plane(t_vector plane, int extra, t_point *point)
+{
+
+    int res = ((plane.x * point->x + plane.y * point->y + plane.z * point->z + extra) / sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z));
+    if (res < 0)
+        res *= -1;
+    return (res);
+
+
+}
+
 int	rgb_to_int(const t_rgb rgb)
 {
 	return(rgb.red << 16 | rgb.green << 8 | rgb.blue);
@@ -64,9 +75,15 @@ void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 	t_vector		perp;
 	t_vector		origpoint;
 	t_m_plane		*aux2;
+	t_cylinder		*aux3;
 	t_rgb			rgb;
 	unsigned char	tmp;
+	int				 extra;
+	t_vector			 auxpoint;
+	 int 			dist;
+	 t_vector 		cnormal;
 
+	 printf("ahsghgfajhgds\n\n");
 	if (obj->type == 1)
 	{
 		aux = (t_sphere *)obj->objet;
@@ -80,11 +97,12 @@ void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 		pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 		sen = pe / (ft_module(origpoint));
 		sen2 = pe2 / (ft_module(origpoint));
-		coordz = (sen / sin(conf->my_camera.radian)) * 1080;
-		if (coordz > 360 || coordz < -360)
-			return ;
-		coordy = (sen2 / sin(conf->my_camera.radian)) * 1080;
-		if (coordy > 540 || coordy < -540)
+		coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
+		coordz = coordz - (1080 - 720) / 2;
+		 if (coordz > 720 || coordz < 0)
+            return;
+		coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
+		if (coordy > 1080 || coordy < 0)
 			return ;
 		else
 		{
@@ -108,6 +126,136 @@ void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 		////para circulo/base
 
 
+		aux3 = (t_cylinder *)obj->objet;
+
+
+            ////para circulo/base
+            if (aux3->base.plane_ecuation.x * point->x + aux3->base.plane_ecuation.y * point->y + aux3->base.plane_ecuation.z * point->z == 0)
+            {
+
+
+        origpoint = vec(point->x, point->y, point->z);
+
+        int pe = ft_escalar_prod(conf->my_camera.h, origpoint);
+
+        int pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
+
+
+        int sen = pe / (ft_module(origpoint));
+
+        int sen2 = pe2 / (ft_module(origpoint));
+
+
+        int coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
+
+        coordz = coordz - (1080 - 720) / 2;
+
+         if (coordz > 720 || coordz < 0)
+            return;
+
+        int coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
+
+        if (coordy > 1080 || coordy < 0)
+            return;
+        else
+        {
+            ////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombras aún
+            intensity = ft_escalar_prod(vec(point->x - conf->my_scene.light_lst.pos.x, point->y - conf->my_scene.light_lst.pos.y, point->z - conf->my_scene.light_lst.pos.z), aux3->base.normal);
+
+           rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->base.color.red * intensity;
+           rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->base.color.green * intensity;
+          rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->base.color.blue * intensity;
+
+            /// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
+
+
+        }
+            }
+            else if (aux3->roof.plane_ecuation.x * point->x + aux3->roof.plane_ecuation.y * point->y + aux3->roof.plane_ecuation.z * point->z == 0)
+            {
+				origpoint = vec(point->x, point->y, point->z);
+
+        pe = ft_escalar_prod(conf->my_camera.h, origpoint);
+
+        pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
+
+
+        sen = pe / (ft_module(origpoint));
+
+        sen2 = pe2 / (ft_module(origpoint));
+
+        coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
+
+        coordz = coordz - (1080 - 720) / 2;
+
+         if (coordz > 720 || coordz < 0)
+            return;
+
+        coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
+
+        if (coordy > 1080 || coordy < 0)
+            return;
+        else
+        {
+			  intensity = ft_escalar_prod(vec(point->x - conf->my_scene.light_lst.pos.x, point->y - conf->my_scene.light_lst.pos.y, point->z - conf->my_scene.light_lst.pos.z), aux3->roof.normal);
+
+            rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->roof.color.red * intensity;
+            rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->roof.color.green * intensity;
+            rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->roof.color.blue * intensity;
+
+            /// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
+        }
+
+            }
+            else
+            {
+				 extra = aux3->base.plane_ecuation.x * aux3->base.center.x + aux3->base.plane_ecuation.y * aux3->base.center.y + aux3->base.plane_ecuation.z * aux3->base.center.z;
+				 
+				 ////
+				 dist = ft_dist_point_plane(aux3->base.plane_ecuation, extra, point);
+				 ////
+				 auxpoint = vec(point->x + aux3->body.dir.x * dist, point->y + aux3->body.dir.y * dist, point->z + aux3->body.dir.z * dist);
+
+                cnormal = vec(auxpoint.x - aux3->body.center.x, auxpoint.y - aux3->body.center.y, auxpoint.z - aux3->body.center.z);
+
+                 origpoint = vec(point->x, point->y, point->z);
+
+        pe = ft_escalar_prod(conf->my_camera.h, origpoint);
+
+        pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
+
+
+        int sen = pe / (ft_module(origpoint));
+
+        int sen2 = pe2 / (ft_module(origpoint));
+
+
+        int coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
+
+         coordz = coordz - (1080 - 720) / 2;
+
+         if (coordz > 720 || coordz < 0)
+            return;
+
+        int coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
+
+        if (coordy > 1080 || coordy < 0)
+            return;
+        else
+        {
+			intensity = ft_escalar_prod(vec(point->x - conf->my_scene.light_lst.pos.x, point->y - conf->my_scene.light_lst.pos.y, point->z - conf->my_scene.light_lst.pos.z), cnormal);
+            rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->color.red * intensity;
+            rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->color.green * intensity;
+            rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->color.blue * intensity;
+		}
+			}
+
+
+
+
+
+
+
 		//
 		//para borde/columna
 		//if (
@@ -123,11 +271,12 @@ void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 		pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 		sen = pe / (ft_module(origpoint));
 		sen2 = pe2 / (ft_module(origpoint));
-		coordz = (sen / sin(conf->my_camera.radian)) * 540;
-		if (coordz > 360 || coordz < -360)
+		coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
+		coordz = coordz - (1080 - 720) / 2;
+		if (coordz > 720 || coordz < 0)
 			return ;
-		coordy = (sen2 / sin(conf->my_camera.radian)) * 540;
-		if (coordy > 540 || coordy < -540)
+		coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
+		if (coordy > 1080 || coordy < 0)
 			return ;
 		else
 		{

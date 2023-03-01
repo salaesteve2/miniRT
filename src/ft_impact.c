@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 09:30:04 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/01 12:10:34 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,19 @@
 #include "../includes/vector.h"
 #include "../includes/ft_process.h"
 
-int	ft_impact(t_conf *conf, t_point *point)
+int	ft_impact(t_conf *conf, t_vector vision)
 {
+	////calcular si HAY interseccion entre el vector con origen 0,0,0 y algun objeto de la lista
 	(void)conf;
-	point->x = 0;
-	point->y = 0;
-	point->z = 0;
+	(void)vision;
 	return (0);
 }
 
-int	ft_closet(t_conf *conf, t_objet *obj)
+t_objet	*ft_closet(t_conf *conf, t_vector vision, t_point *point)
 {
+	//calcular la distancia a los objetos con intersección, discernir el mas cercano y rellenar las coordenadas del punto de impacto a la vez que retorna el t_objet del objeto
 	(void)conf;
-	(void)obj;
-	return (0);
+	(void)vision;
+	(void)point;
+	return (NULL);
 }
