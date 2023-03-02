@@ -97,6 +97,7 @@ typedef enum    e_geometry{
 typedef struct  s_sphere
 {
     t_vector    center;
+    t_vector    intersection;
     double      radius;
     t_rgb     color;
 }               t_sphere;
@@ -124,6 +125,7 @@ typedef struct  s_cylinder
 {
     t_vector    dir;
     t_vector    center;
+    t_vector    intersection;
     double      radius;
     double      height;
     t_rgb	     color;
@@ -143,6 +145,7 @@ typedef struct  s_m_plane
     t_vector    point;
     t_vector    normal;
 	t_vector	plane_ecuation;
+    t_vector    intersection;
     t_rgb     color;
 }               t_m_plane;
 
@@ -160,22 +163,17 @@ typedef struct  s_objet
     t_color     color;
 }               t_ray_hit_data;*/
 
-typedef struct  s_point
-{
-    double      x;
-    double      y;
-    double      z;
-}               t_point;
-
-void	ft_point(t_point *point, t_objet *obj, t_conf *conf);
+void	ft_point(t_objet *obj, t_conf *conf);
 int		rgb_to_int(const t_rgb rgb);
 int		ft_impact(t_conf *conf, t_vector vision);
-t_objet	*ft_closet(t_conf *conf, t_vector vision, t_point *point);
+t_objet	*ft_closet(t_conf *conf, t_vector vision);
 
 int     ft_vector_to_plane(t_vector vision, t_m_plane *objet);
 int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet);
 int	ft_vector_to_sphere(t_vector vision, t_sphere *objet);
-int ft_dist_point_plane(t_vector plane, int extra, t_point *point);
+int ft_dist_point_plane(t_vector plane, int extra, t_vector point);
 t_vector vec(double x, double y, double z);
-t_point	ft_intersecction_plane_line(t_m_plane *plane, t_vector *line);
+t_vector	ft_coords_point_plane(t_m_plane *plane, t_vector line);
+double	ft_module(t_vector v);
+t_vector	ft_coords_point_sphere(t_vector vision, t_sphere *objet);
 #endif

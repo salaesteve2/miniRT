@@ -48,8 +48,8 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
             return (0);
     }
 
-	    t_point     tops;
-    t_point     bots;
+	t_vector     tops;
+    t_vector    bots;
 
     tops.x = objet->base.center.x + objet->base.normal.x * objet->height;
     tops.y = objet->base.center.y + objet->base.normal.y * objet->height;
@@ -59,31 +59,30 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
     bots.z = objet->roof.center.z + objet->roof.normal.z * objet->height;
 
 
-     distcent2 = (vision.x * tops.x + vision.y * tops.y + vision.z * tops.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-    if (distcent < objet->height)
+    distcent2 = (vision.x * tops.x + vision.y * tops.y + vision.z * tops.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
+    if (distcent2 < objet->height)
         return (0);
     distcent2 = (vision.x * bots.x + vision.y * bots.y + vision.z * bots.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-    if (distcent < objet->height)
+    if (distcent2 < objet->height)
         return (0);
 	return (1);
 }
 
 int	ft_vector_to_plane(t_vector vision, t_m_plane *objet)
 {
-	int		dis1;
-	int		dis2;
-	t_point	*origin;
-	int		extra;
+	int		    dis1;
+	int		    dis2;
+	t_vector    origin;
+	int		    extra;
 
-	origin = malloc(sizeof(t_point));
-	origin->x = 0;
-	origin->y = 0;
-	origin->z = 0;
+	origin.x = 0;
+	origin.y = 0;
+	origin.z = 0;
 	extra = objet->plane_ecuation.x * objet->point.x + objet->plane_ecuation.y * objet->point.y + objet->plane_ecuation.z * objet->point.z;
 	dis1 = ft_dist_point_plane(objet->plane_ecuation, extra, origin);
-	origin->x = vision.x;
-	origin->y = vision.y;
-	origin->z = vision.z;
+	origin.x = vision.x;
+	origin.y = vision.y;
+	origin.z = vision.z;
 	dis2 = ft_dist_point_plane(objet->plane_ecuation, extra, origin);
 	if (dis1 == dis2)
 		return (dis1);

@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 13:21:37 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:55:28 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_make_img(t_img *img, t_conf *conf)
 	int				(*tab)[1080][1];
 	t_objet			*obj;
 //	t_list			*tmp;
-	t_point			*point;
 	int				s;
 	double			vecg;
 	double			vecp;
@@ -70,7 +69,6 @@ void	ft_make_img(t_img *img, t_conf *conf)
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
-	point = malloc(sizeof(double) * 3);
 	while (conf->my_pixel.x < 1080)
 	{
 		vecg = conf->my_pixel.x / 540 * tan(conf->my_scene.cam_lst.radian);
@@ -79,13 +77,11 @@ void	ft_make_img(t_img *img, t_conf *conf)
 		{
 			vecp = conf->my_pixel.y / 360 * tan(conf->my_scene.cam_lst.radian);
 			vision = normalize(vec(conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg + conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg + conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg + conf->my_scene.cam_lst.view.z));
-			////////
 			if (ft_impact(conf, vision) == 1)
 			{
-				obj = ft_closet(conf, vision, point);
+				obj = ft_closet(conf, vision);
 				if (obj != NULL)
-					ft_point(point, obj, conf);
-				//////
+					ft_point(obj, conf);
 			}
 			else
 			{
@@ -153,7 +149,6 @@ int	ft_parser(char **argv, t_conf *conf)
 		printf("ERROR");
 		return (1);
 	}
-
 	////PRINTEO AUXILIAR////
 	conf->my_scene.cam_lst.radian = (conf->my_scene.cam_lst.grades * 3.14159265359) / 180;
 	conf->my_scene.light_lst.pos.x = conf->my_scene.light_lst.pos.x - conf->my_scene.cam_lst.pos.x;
