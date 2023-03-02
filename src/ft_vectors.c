@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:25:35 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 13:07:29 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:12:58 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_point	ft_intersecction_plane_line(t_m_plane *plane, t_vector *line)
 	nb = -(plane->point.x * plane->normal.x) - (plane->point.y * plane->normal.y) - (plane->point.z * plane->normal.z);
 	res = -nb / ((line->x * plane->normal.x) + (line->y * plane->normal.y) + (line->z * plane->normal.z));
 	point.x = res * line->x;
-	point.y = res * line->x;
-	point.z = res * line->x;
+	point.y = res * line->y;
+	point.z = res * line->z;
 	return (point);
 }
