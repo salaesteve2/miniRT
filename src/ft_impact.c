@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 12:02:46 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:33:34 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,35 @@ t_objet	*ft_closet(t_conf *conf, t_vector vision, t_point *point)
 	(void)vision;
 	(void)point;
 	return (NULL);
+}
+
+t_point ft_coords_point_sphere(t_vector vision, t_sphere *objet)
+{
+    int distcent;
+
+    int discenorig;
+
+    int longray;
+
+    int extra;
+
+    int path;
+
+    t_point result;
+
+    distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
+
+    discenorig = sqrt(objet->center.x * objet->center.x + objet->center.y * objet->center.y + objet->center.z * objet->center.z);
+
+    longray = sqrt(distcent * distcent + discenorig * discenorig);
+
+    extra = sqrt(distcent * distcent + objet->radius * objet->radius);
+
+    path = longray - extra;
+
+    result.x = vision.x * path;
+    result.y = vision.y * path;
+    result.z = vision.z * path;
+
+    return (result);
 }
