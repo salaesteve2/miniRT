@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 18:21:09 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/02 18:40:17 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	rgb_to_int(const t_rgb rgb)
 {
 	return(rgb.red << 16 | rgb.green << 8 | rgb.blue);
 }
-
+//no funciona, se pasan los pixeles
 void	ft_point(t_objet *obj, t_conf *conf)
 {
 	double			pe;
@@ -98,7 +98,6 @@ void	ft_point(t_objet *obj, t_conf *conf)
 		sen2 = pe2 / (ft_module(origpoint));
 		coordz = (sen / sin(conf->my_camera.radian)) * 540 + 540;
 		coordz = coordz - (1080 - 720) / 2;
-		printf("--%d--\n", coordz);
 		if (coordz > 720 || coordz < 0)
 			return ;
 		coordy = (sen2 / sin(conf->my_camera.radian)) * 540 + 540;
