@@ -55,6 +55,7 @@ typedef struct  s_m_plane
 {
     t_vector    point;
     t_vector    normal;
+	t_vector	plane_ecuation;
     t_rgb     color;
 }               t_m_plane;
 

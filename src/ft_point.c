@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 11:41:54 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/02 10:41:15 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	ft_point(t_point *point, t_objet *obj, t_conf *conf)
 	 int 			dist;
 	 t_vector 		cnormal;
 
-	 printf("ahsghgfajhgds\n\n");
 	if (obj->type == 1)
 	{
 		aux = (t_sphere *)obj->objet;

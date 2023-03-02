@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 12:12:22 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/02 10:13:00 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ int	ft_parser(char **argv, t_conf *conf)
             b->point.y = b->point.y - conf->my_scene.cam_lst.pos.y;
             b->point.z = b->point.z - conf->my_scene.cam_lst.pos.z;
 			b->normal = normalize(b->normal);
+			b->plane_ecuation = vec((b->normal.x * (1 - b->point.x)), (b->normal.y * (1 - b->point.y)), (b->normal.z * (1 - b->point.z)));
         }
         x = x->next;
     }
