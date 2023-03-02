@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:25:35 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/01 21:04:37 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:09:43 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,16 @@
 #include "../lib/libft/libft.h"
 
 //vector direccion plano y recta
-
-int	ft_parallel_line(t_vector plane, t_vector line)
+t_point	ft_intersecction_plane_line(t_m_plane *plane, t_vector *line)
 {
-	double	res;
+	double		nb;
+	double		res;
+	t_point		point;
 
-	res = ft_escalar_prod(plane, line);
-	if (res == 0)
-		return (0);
-	return (1);
-}
-
-//necesito la ecuacion del plano
-//para hallarlo
-//vector normal ej: (1, -5, 3)
-//punto: (0, 1, 0) 
-//ax + by + cz + d = 0
-//1x -5y +3z + d = 0
-//1 * 0 -5 * 1 + 3 * 0 + d = 0
-// d = 5
-//ecuacion plano (1x -5y + 3z + 5 = 0)
-//necesito la ecuacion de la recta
-//para hallarlo
-//necesito el vector y un punto
-t_point ft_intersecction(t_vector plane, t_vector line)
-{
-
+	nb = plane->point.x * plane->normal.x - plane->point.y * plane->normal.y - plane->point.z * plane->normal.z;
+	res = -nb / (line->x + line->y + line->z);
+	point.x = res * line->x;
+	point.y = res * line->x;
+	point.z = res * line->x;
+	return (point);
 }

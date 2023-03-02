@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 09:52:16 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:02:46 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,30 @@
 int	ft_impact(t_conf *conf, t_vector vision)
 {
 	////calcular si HAY interseccion entre el vector con origen 0,0,0 y algun objeto de la lista
-	
-	t_objet *obj = (t_objet *)conf->my_scene.obj_lst;
+	t_list *list;
+	t_objet *obj;
 
-	while (obj != NULL)
+	list = conf->my_scene.obj_lst;
+	while (list != NULL)
 	{
+		obj = (t_objet *)conf->my_scene.obj_lst->content;
 		if (obj->type == 1)
 		{
-			if (ft_vector_to_sphere(vision, obj->objet) == 1)
-                return (1);
+			if (ft_vector_to_sphere(vision, (t_sphere *)obj->objet) == 1)
+				return (1);
 		}
 		else if (obj->type == 2)
 		{
-			if (ft_vector_to_cylinder(vision, obj->objet) == 1)
+			if (ft_vector_to_cylinder(vision, (t_cylinder *)obj->objet) == 1)
 				return (1);
 		}
 		else if (obj->type == 3)
 		{
-			if (ft_vector_to_plane(vision, obj->objet) == 1)
-                return (1);
+			if (ft_vector_to_plane(vision, (t_m_plane *)obj->objet) == 1)
+				return (1);
 		}
-		obj = obj->next;
+		list = list->next;
 	}
-
-
 	return (0);
 }
 

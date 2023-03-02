@@ -7,46 +7,41 @@
 #include "../includes/vector.h"
 #include "../includes/ft_process.h"
 
-int	ft_vector_to_sphere(t_vector vision, t_sphere objet)
+int	ft_vector_to_sphere(t_vector vision, t_sphere *objet)
 {
-
-	int distcent;
+	int	distcent;
 
 	distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-
 	if (distcent > objet->radius)
 		return (0);
 	else
 		return (1);
 }
 
-int	ft_vector_to_cylinder(t_vector vision, t_cylinder objet)
+int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 {
-
+	(void)vision;
+	(void)objet;
+	return (0);
 }
 
-int ft_vector_to_plane(t_vector vision, t_m_plane objet)
+int	ft_vector_to_plane(t_vector vision, t_m_plane *objet)
 {
-	int dis1;
-	int dis2;
+	int		dis1;
+	int		dis2;
+	t_point	*origin;
+	int		extra;
 
-	t_point *origin;
-
-	origin.x = 0;
-	origin.y = 0;
-	origin.z = 0;
-
-
-	 int extra = objet->plane_ecuation.x * objet->point.x + objet->plane_ecuation.y * objet->point.y + objet->plane_ecuation.z * objet->center.z;
-
-	dis1 = ft_dist_point_plane(objet.plane_ecuation, extra, origin);
-
-	origin.x = vision.x;
-	origin.y = vision.y;
-	origin.z = vision.z;
-
-	dis2 = ft_dist_point_plane(objet.plane_ecuation, extra, origin);
-
+	origin = malloc(sizeof(t_point));
+	origin->x = 0;
+	origin->y = 0;
+	origin->z = 0;
+	extra = objet->plane_ecuation.x * objet->point.x + objet->plane_ecuation.y * objet->point.y + objet->plane_ecuation.z * objet->point.z;
+	dis1 = ft_dist_point_plane(objet->plane_ecuation, extra, origin);
+	origin->x = vision.x;
+	origin->y = vision.y;
+	origin->z = vision.z;
+	dis2 = ft_dist_point_plane(objet->plane_ecuation, extra, origin);
 	if (dis1 == dis2)
 		return (dis1);
 	else
