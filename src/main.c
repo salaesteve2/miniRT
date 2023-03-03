@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 17:55:28 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:55:41 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,51 @@ void	ft_make_img(t_img *img, t_conf *conf)
 	int				(*tab)[1080][1];
 	t_objet			*obj;
 //	t_list			*tmp;
+//	t_point			*point;
 	int				s;
 	double			vecg;
 	double			vecp;
 	t_vector		vision;
+	int				sign;
+	double			aux;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
+	//point = malloc(sizeof(double) * 3);
 	while (conf->my_pixel.x < 1080)
 	{
-		vecg = conf->my_pixel.x / 540 * tan(conf->my_scene.cam_lst.radian);
+		aux = (conf->my_pixel.x - 540);
+		 if (aux < 0)
+             {
+                 sign = -1;
+                 aux *= -1;
+             }
+             else
+                 sign = 1;
+		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian);
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
-			vecp = conf->my_pixel.y / 360 * tan(conf->my_scene.cam_lst.radian);
-			vision = normalize(vec(conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg + conf->my_scene.cam_lst.view.x, conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg + conf->my_scene.cam_lst.view.y, conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg + conf->my_scene.cam_lst.view.z));
+			aux = (conf->my_pixel.y - 360);
+			 if (aux < 0)
+			 {
+				 sign = -1;
+				 aux *= -1;
+			 }
+			 else
+				 sign = 1;
+
+			vecp = (aux / 540)  * tan(conf->my_scene.cam_lst.radian) * sign;
+
+			vision = normalize(vec(conf->my_scene.cam_lst.view.x + conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg, conf->my_scene.cam_lst.view.y + conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg, conf->my_scene.cam_lst.view.z + conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg));
+
+			//////A PARTIR DE AQUI DA FLOATING POINT EXCEPTION ERROR
 			if (ft_impact(conf, vision) == 1)
 			{
 				obj = ft_closet(conf, vision);
 				if (obj != NULL)
 					ft_point(obj, conf);
+				//////
 			}
 			else
 			{
@@ -149,6 +174,7 @@ int	ft_parser(char **argv, t_conf *conf)
 		printf("ERROR");
 		return (1);
 	}
+
 	////PRINTEO AUXILIAR////
 	conf->my_scene.cam_lst.radian = (conf->my_scene.cam_lst.grades * 3.14159265359) / 180;
 	conf->my_scene.light_lst.pos.x = conf->my_scene.light_lst.pos.x - conf->my_scene.cam_lst.pos.x;
