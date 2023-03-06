@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/03 11:55:41 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/06 09:21:24 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,29 @@ void	ft_make_img(t_img *img, t_conf *conf)
 	while (conf->my_pixel.x < 1080)
 	{
 		aux = (conf->my_pixel.x - 540);
-		 if (aux < 0)
-             {
-                 sign = -1;
-                 aux *= -1;
-             }
-             else
-                 sign = 1;
+		if (aux < 0)
+		{
+			sign = -1;
+			aux *= -1;
+		}
+		else
+			sign = 1;
 		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian);
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
 			aux = (conf->my_pixel.y - 360);
-			 if (aux < 0)
-			 {
-				 sign = -1;
-				 aux *= -1;
-			 }
-			 else
-				 sign = 1;
-
+			if (aux < 0)
+			{
+				sign = -1;
+				aux *= -1;
+			}
+			else
+				sign = 1;
 			vecp = (aux / 540)  * tan(conf->my_scene.cam_lst.radian) * sign;
-
 			vision = normalize(vec(conf->my_scene.cam_lst.view.x + conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg, conf->my_scene.cam_lst.view.y + conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg, conf->my_scene.cam_lst.view.z + conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg));
-
 			//////A PARTIR DE AQUI DA FLOATING POINT EXCEPTION ERROR
+			//(En ft_vector_to_cylinder las variabe eran int cuando deberian ser double, solucionado)
 			if (ft_impact(conf, vision) == 1)
 			{
 				obj = ft_closet(conf, vision);

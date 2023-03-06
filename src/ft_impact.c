@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/03 15:33:43 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/06 09:19:53 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_vector	ft_coords_point_plane2(t_circle *plane, t_vector line)
 
 t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 {
-	(void)obj;
 	t_vector	pointbase;
 	t_vector	pointroof;
 	t_vector	b_center;
