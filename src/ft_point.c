@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/02 18:40:17 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:48:12 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ int	rgb_to_int(const t_rgb rgb)
 //no funciona, se pasan los pixeles
 void	ft_point(t_objet *obj, t_conf *conf)
 {
-	double			pe;
+	/*double			pe;
 	double			pe2;
 	double			sen;
 	double			sen2;
 	int				coordz;
-	int				coordy;
+	int				coordy;*/
 	double			intensity;
 	t_sphere		*aux;
 	t_vector		perp;
-	t_vector		origpoint;
+//	t_vector		origpoint;
 	t_m_plane		*aux2;
 	t_cylinder		*aux3;
 	t_rgb			rgb;
@@ -87,9 +87,9 @@ void	ft_point(t_objet *obj, t_conf *conf)
 	{
 		aux = (t_sphere *)obj->objet;
 		///la normal(vector perpendicular) al punto, se usará para la luz
-		perp = vec(aux->intersection.x - aux->center.x, aux->intersection.y - aux->center.y, aux->intersection.z - aux->center.z);
+		perp = normalize(vec(aux->intersection.x - aux->center.x, aux->intersection.y - aux->center.y, aux->intersection.z - aux->center.z));
 		//el vector del origen/camara al punto, necesario para el tamaño y ubicacion del pixel
-		origpoint = vec(aux->intersection.x, aux->intersection.y, aux->intersection.z);
+	/*	origpoint = vec(aux->intersection.x, aux->intersection.y, aux->intersection.z);
 				///producto escalar de vect al obj y eje de pantalla / distancia = seno del angulo de visión.
 				/////heidht
 		pe = ft_escalar_prod(conf->my_camera.h, origpoint);
@@ -104,17 +104,24 @@ void	ft_point(t_objet *obj, t_conf *conf)
 		if (coordy > 1080 || coordy < 0)
 			return ;
 		else
-		{
+		{*/
 			///put point at coordz coordy of the screen//
 			////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombra
-			intensity = ft_escalar_prod(vec(aux->intersection.x - conf->my_scene.light_lst.pos.x, aux->intersection.y - conf->my_scene.light_lst.pos.y, aux->intersection.z - conf->my_scene.light_lst.pos.z), perp);
+		
+	
+	/*	intensity = ft_escalar_prod(normalize(vec(aux->intersection.x - conf->my_scene.light_lst.pos.x, aux->intersection.y - conf->my_scene.light_lst.pos.y, aux->intersection.z - conf->my_scene.light_lst.pos.z)), perp);
 			rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux->color.red * intensity;
 			rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux->color.green * intensity;
 			rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux->color.blue * intensity;
 			tmp = (unsigned char)rgb_to_int(rgb);
-			conf->my_pixel.color = tmp;
+			conf->my_pixel.color = tmp;*/
+			intensity = 0.5;
+		 	rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux->color.red * intensity;
+            rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux->color.green * intensity;
+            rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux->color.blue * intensity;
+            tmp = (unsigned char)rgb_to_int(rgb);
+            conf->my_pixel.color = tmp;
 			/// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
-		}
 	}
 	else if (obj->type == 2)
 	{
@@ -123,7 +130,7 @@ void	ft_point(t_objet *obj, t_conf *conf)
             ////para circulo/base
 		if (aux3->base.plane_ecuation.x * aux3->intersection.x + aux3->base.plane_ecuation.y * aux3->intersection.y + aux3->base.plane_ecuation.z * aux3->intersection.z == 0)
 		{
-			origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
+		/*	origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
 			pe = ft_escalar_prod(conf->my_camera.h, origpoint);
 			pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 			sen = pe / (ft_module(origpoint));
@@ -136,20 +143,22 @@ void	ft_point(t_objet *obj, t_conf *conf)
 			if (coordy > 1080 || coordy < 0)
 				return ;
 			else
-			{
+			{*/
 				////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombras aún
 				intensity = ft_escalar_prod(vec(aux3->intersection.x - conf->my_scene.light_lst.pos.x, aux3->intersection.y - conf->my_scene.light_lst.pos.y, aux3->intersection.z - conf->my_scene.light_lst.pos.z), aux3->base.normal);
+
+
+				 intensity = 0.5;
 				rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->base.color.red * intensity;
 				rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->base.color.green * intensity;
 				rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->base.color.blue * intensity;
 				tmp = (unsigned char)rgb_to_int(rgb);
 				conf->my_pixel.color = tmp;
 					/// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
-			}
 		}
 		else if (aux3->roof.plane_ecuation.x * aux3->intersection.x + aux3->roof.plane_ecuation.y * aux3->intersection.y + aux3->roof.plane_ecuation.z * aux3->intersection.z == 0)
 		{
-			origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
+			/*origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
 			pe = ft_escalar_prod(conf->my_camera.h, origpoint);
 			pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 			sen = pe / (ft_module(origpoint));
@@ -162,15 +171,16 @@ void	ft_point(t_objet *obj, t_conf *conf)
 			if (coordy > 1080 || coordy < 0)
 				return ;
 			else
-			{
+			{*/
 				intensity = ft_escalar_prod(vec(aux3->intersection.x - conf->my_scene.light_lst.pos.x, aux3->intersection.y - conf->my_scene.light_lst.pos.y, aux3->intersection.z - conf->my_scene.light_lst.pos.z), aux3->roof.normal);
+
+				 intensity = 0.5;
 				rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->roof.color.red * intensity;
 				rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->roof.color.green * intensity;
 				rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->roof.color.blue * intensity;
 				tmp = (unsigned char)rgb_to_int(rgb);
 				conf->my_pixel.color = tmp;
 				/// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
-			}
 		}
 		else
 		{
@@ -178,7 +188,7 @@ void	ft_point(t_objet *obj, t_conf *conf)
 			dist = ft_dist_point_plane(aux3->base.plane_ecuation, extra, aux3->intersection);
 			auxpoint = vec(aux3->intersection.x + aux3->body.dir.x * dist, aux3->intersection.y + aux3->body.dir.y * dist, aux3->intersection.z + aux3->body.dir.z * dist);
 			cnormal = vec(auxpoint.x - aux3->body.center.x, auxpoint.y - aux3->body.center.y, auxpoint.z - aux3->body.center.z);
-			origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
+			/*origpoint = vec(aux3->intersection.x, aux3->intersection.y, aux3->intersection.z);
 			pe = ft_escalar_prod(conf->my_camera.h, origpoint);
 			pe2 = ft_escalar_prod(conf->my_camera.w, origpoint);
 			sen = pe / (ft_module(origpoint));
@@ -191,21 +201,22 @@ void	ft_point(t_objet *obj, t_conf *conf)
 			if (coordy > 1080 || coordy < 0)
 				return ;
 			else
-			{
+			{*/
 				intensity = ft_escalar_prod(vec(aux3->intersection.x - conf->my_scene.light_lst.pos.x, aux3->intersection.y - conf->my_scene.light_lst.pos.y, aux3->intersection.z - conf->my_scene.light_lst.pos.z), cnormal);
+
+				intensity = 0.5;
 				rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux3->color.red * intensity;
 				rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux3->color.green * intensity;
 				rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux3->color.blue * intensity;
 				tmp = (unsigned char)rgb_to_int(rgb);
 				conf->my_pixel.color = tmp;
 			}
-		}
 	}
 	else if (obj->type == 3)
 	{
 		aux2 = (t_m_plane *)obj->objet;
 		//el vector del origen/camara al punto, necesario para el tamaño y ubicacion del pixel
-		origpoint = vec(aux2->intersection.x, aux2->intersection.y, aux2->intersection.z);
+	/*	origpoint = vec(aux2->intersection.x, aux2->intersection.y, aux2->intersection.z);
 				///producto escalar de vect al obj y eje de pantalla / distancia = seno del angulo de visión.
 				/////heidht
 		pe = ft_escalar_prod(conf->my_camera.h, origpoint);
@@ -220,16 +231,16 @@ void	ft_point(t_objet *obj, t_conf *conf)
 		if (coordy > 1080 || coordy < 0)
 			return ;
 		else
-		{
+		{*/
 			///put point at coordz coordy of the screen//
 			////NO TENEMOS EN CUENTA LA INTERSECCION DE OTROS OBJETOS SOBRE EL VECTOR DE LA LUZ FOCAL; vamos que no hay sombras aún
-			intensity = ft_escalar_prod(vec(aux2->intersection.x - conf->my_scene.light_lst.pos.x, aux2->intersection.y - conf->my_scene.light_lst.pos.y, aux2->intersection.z - conf->my_scene.light_lst.pos.z), aux2->normal);
+			/*intensity = ft_escalar_prod(vec(aux2->intersection.x - conf->my_scene.light_lst.pos.x, aux2->intersection.y - conf->my_scene.light_lst.pos.y, aux2->intersection.z - conf->my_scene.light_lst.pos.z), aux2->normal);*/
+		intensity = 0.5;
 			rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux2->color.red * intensity;
 			rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux2->color.green * intensity;
 			rgb.blue = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) * aux2->color.blue * intensity;
 			/// FALTAAA: pintamos pixel con colores red, blue y green en coordy, coordz de la pantalla...
 			tmp = (unsigned char)rgb_to_int(rgb);
 			conf->my_pixel.color = tmp;
-		}
 	}
 }

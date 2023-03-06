@@ -168,6 +168,7 @@ int		rgb_to_int(const t_rgb rgb);
 int		ft_impact(t_conf *conf, t_vector vision);
 t_objet	*ft_closet(t_conf *conf, t_vector vision);
 
+double dot_prod(t_vector u, t_vector v);
 int     ft_vector_to_plane(t_vector vision, t_m_plane *objet);
 int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet);
 int	ft_vector_to_sphere(t_vector vision, t_sphere *objet);
