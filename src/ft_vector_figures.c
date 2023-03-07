@@ -234,7 +234,7 @@ int	ft_vector_to_plane(t_vector vision, t_m_plane *objet)
 	double	dist = ft_proyectvector(origplane, objet->normal);
 	double	dist2 = ft_proyectvector(noorigiplane, objet->normal);
 
-	if (dist == dist2)
+	if (dist == dist2 || dist < dist2)
 		return (0);
 	return (1);
 
