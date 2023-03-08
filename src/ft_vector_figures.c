@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:31:25 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:28:16 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 19:56:14 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 	double		distv;
 	double		predis;
 	double		extra;
-	double		rad;
+	//double		rad;
 	double		distcent;
 	double		module;
 	double		matrix;
@@ -109,7 +109,7 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 		if (modx <= objet->radius)
 			return (1);
 	}
-	rad = sqrt(objet->radius * objet->radius + (objet->height / 2) * (objet->height / 2));
+	//rad = sqrt(objet->radius * objet->radius + (objet->height / 2) * (objet->height / 2));
 	aux = (vec(vision.y * objet->dir.z - vision.z * objet->dir.y, vision.z * objet->dir.x - vision.x * objet->dir.z, vision.x * objet->dir.y - vision.y * objet->dir.x));
 	module = sqrt(pow(aux.x, 2) + pow(aux.y, 2) + pow(aux.z, 2));
 	matrix = vision.x * objet->dir.y * objet->center.z - vision.z * objet->dir.y * objet->center.x + vision.y * objet->dir.z * objet->center.x - vision.y * objet->dir.x * objet->center.z + vision.z * objet->dir.x * objet->center.y - vision.x * objet->dir.z * objet->center.y;

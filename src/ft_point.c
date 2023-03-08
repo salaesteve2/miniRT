@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:44:26 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 19:55:40 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_point(t_objet *obj, t_conf *conf)
 {
 	double			intensity;
 	t_sphere		*aux;
-	t_vector		perp;
+	//t_vector		perp;
 	t_m_plane		*aux2;
 	t_cylinder		*aux3;
 	t_rgb			rgb;
@@ -70,7 +70,7 @@ void	ft_point(t_objet *obj, t_conf *conf)
 	if (obj->type == 1)
 	{
 		aux = (t_sphere *)obj->objet;
-		perp = normalize(vec(aux->intersection.x - aux->center.x, aux->intersection.y - aux->center.y, aux->intersection.z - aux->center.z));
+		//perp = normalize(vec(aux->intersection.x - aux->center.x, aux->intersection.y - aux->center.y, aux->intersection.z - aux->center.z));
 		intensity = 0.5;
 		rgb.red = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) * aux->color.red * intensity;
 		rgb.green = (conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) * aux->color.green * intensity;

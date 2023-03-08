@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:46:05 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 19:55:50 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 	t_vector	two_points;
 	t_vector	normalplane;
 	t_vector	pointplane;
-	int			extra;
+	//int			extra;
 	double		angle;
 	double		modvis;
 	double		modaux;
@@ -49,7 +49,7 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 	dist = dot_prod(two_points, norm);
 	if (dist > obj->radius)
 		return (vec(0, 0, 0));
-	extra = obj->dir.x * obj->center.x + obj->dir.y * obj->center.y + obj->dir.z * obj->center.z;
+	//extra = obj->dir.x * obj->center.x + obj->dir.y * obj->center.y + obj->dir.z * obj->center.z;
 	aux = vec(obj->dir.x + norm.x * dist, obj->dir.y + norm.y * dist, obj->dir.z + norm.z * dist);
 	normalplane = provec(norm, aux);
 	pointplane.x = obj->center.x;

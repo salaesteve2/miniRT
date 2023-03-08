@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:48:36 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 19:54:34 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_parser(char **argv, t_conf *conf)
 	t_sphere	*a;
 	t_cylinder	*c;
 	t_m_plane	*b;
-	t_objet		*aux;
+	//t_objet		*aux;
 
 	s = ft_data(argv);
 	if (!s)
