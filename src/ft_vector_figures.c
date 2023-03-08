@@ -10,8 +10,23 @@
 int	ft_vector_to_sphere(t_vector vision, t_sphere *objet)
 {
 	double	distcent;
+	double aux;
+	double aux2;
+	t_vector preaux;;
+	preaux = vec(objet->center.y * vision.z - objet->center.z * vision.y, objet->center.z * vision.x - objet->center.x * vision.z, objet->center.x * vision.y - objet->center.y * vision.x);
 
-	distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
+	aux = sqrt(preaux.x * preaux.x + preaux.y * preaux.y + preaux.z * preaux.z);
+   if (aux < 0)
+	   aux *= -1;
+
+	   
+
+   aux2 = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
+	distcent = aux / aux2;
+
+	if (distcent < 0)
+       distcent *= -1;
+
 	if (distcent > objet->radius)
 		return (0);
 	else
@@ -40,6 +55,27 @@ t_vector	ft_coords_point_plane3(t_circle *plane, t_vector line)
 
 int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 {
+	double disto;
+	double distv;
+	double predis;
+	double extra;
+
+	extra = objet->dir.x * objet->center.x + objet->dir.y * objet->center.y + objet->dir.z * objet->center.z;
+
+	predis = extra;
+   if (predis < 0)
+	   predis *= -1;
+   disto = predis / sqrt(objet->dir.x * objet->dir.x + objet->dir.y * objet->dir.y + objet->dir.z * objet->dir.z);
+   predis = objet->dir.x * vision.x + objet->dir.y * vision.y + objet->dir.z * vision.z + extra;
+   if (predis < 0)
+       predis *= -1;
+   distv = predis / sqrt(objet->dir.x * objet->dir.x + objet->dir.y * objet->dir.y + objet->dir.z * objet->dir.z);
+
+   if (disto > distv)
+	   return (0);
+	
+	   
+
 	double rad;
     double distcent;
     /*t_vector    c_o;

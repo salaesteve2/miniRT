@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_impact.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
+/*   By: valarcon <valarcon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/06 11:57:47 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/08 13:11:36 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 
 		double	hipotenusa = distaux / sin(angle);
 
-		///ahora si, muevo desde el punto mas cercano al eje del cilindro que tiene el vector vision una cantidad de la hipotenusa hayada, en la dirección de vision
+		///ahora si, muevo desde el punto mas cercano al eje del cilindro que tiene el vector vision una cantidad de la hipotenusa hayada, en la dirección opuesta de vision
 		t_vector	result;
 
 		if (vision.x + vision.y + vision.z > 0)
@@ -194,10 +194,8 @@ int	ft_impact(t_conf *conf, t_vector vision)
 		obj = (t_objet *)list->content;
 		if (obj->type == 1)
 		{
-			if (ft_vector_to_sphere(vision, (t_sphere *)obj->objet) == 0)
+			if (ft_vector_to_sphere(vision, (t_sphere *)obj->objet) == 1)
 			{
-				if (vision.x == 0 && vision.y == 1 && vision.z == 0)
-					printf("afysdDFGDFSDAF");
 				return (1);
 			}
 		}
@@ -208,7 +206,7 @@ int	ft_impact(t_conf *conf, t_vector vision)
 		}
 		else if (obj->type == 3)
 		{
-			if (ft_vector_to_plane(vision, (t_m_plane *)obj->objet) == 0)
+			if (ft_vector_to_plane(vision, (t_m_plane *)obj->objet) == 1)
 				return (1);
 		}
 		list = list->next;
@@ -239,7 +237,7 @@ t_objet	*ft_closet(t_conf *conf, t_vector vision)
 		obj = (t_objet *)list->content;
 		if (obj->type == 1)
 		{
-			if (ft_vector_to_sphere(vision, (t_sphere *)obj->objet) == 0)
+			if (ft_vector_to_sphere(vision, (t_sphere *)obj->objet) == 1)
 			{
 				coord = ft_coords_point_sphere(vision, (t_sphere *)obj->objet);
 				tmp = (t_sphere *)obj->objet;
@@ -273,7 +271,7 @@ t_objet	*ft_closet(t_conf *conf, t_vector vision)
 		}
 		else if (obj->type == 3)
 		{
-			if (ft_vector_to_plane(vision, (t_m_plane *)obj->objet) == 0)
+			if (ft_vector_to_plane(vision, (t_m_plane *)obj->objet) == 1)
 			{
 				coord = ft_coords_point_plane((t_m_plane *)obj->objet, vision);
 				tmp2 = (t_m_plane *)obj->objet;
