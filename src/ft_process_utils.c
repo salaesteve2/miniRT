@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:40:32 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 15:42:34 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:40:36 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	ft_atoi(const char *str)
 	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
 	{
 		if (num > __LONG_LONG_MAX__ || i >= 19)
-			return (a == -1 ? 0 : -1);
+		{
+			if (a == -1)
+				return (0);
+			return (-1);
+		}
 		num = num * 10 + (str[i] - '0');
 		i++;
 	}
@@ -76,7 +80,8 @@ long double	ft_atod(const char *str)
 	z_len = 0;
 	while (!(ft_isdigit(str[i])))
 	{
-		sign = (str[i] == '-') ? sign * -1 : sign;
+		if (str[i] == '-')
+			sign *= -1;
 		i++;
 	}
 	intg = ft_atoi(str + i);
