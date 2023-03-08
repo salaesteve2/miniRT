@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:31:25 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:21:36 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:28:16 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	ft_vector_to_sphere(t_vector vision, t_sphere *objet)
 	double		aux2;
 	t_vector	preaux;
 
-	preaux = vec(objet->center.y * vision.z - objet->center.z * vision.y, objet->center.z * vision.x - objet->center.x * vision.z, objet->center.x * vision.y - objet->center.y * vision.x);
+	preaux.x = objet->center.y * vision.z - objet->center.z * vision.y;
+	preaux.y = objet->center.z * vision.x - objet->center.x * vision.z;
+	preaux.z = objet->center.x * vision.y - objet->center.y * vision.x;
 	aux = sqrt(pow(preaux.x, 2) + pow(preaux.y, 2) + pow(preaux.z, 2));
 	if (aux < 0)
 		aux *= -1;
@@ -76,16 +78,18 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 	double		dist_p_center;
 	t_vector	resultadocambiado;
 	t_circle	*p;
+	double		tmp;
 
 	extra = objet->dir.x * objet->center.x + objet->dir.y * objet->center.y + objet->dir.z * objet->center.z;
 	predis = extra;
 	if (predis < 0)
 		predis *= -1;
-	disto = predis / sqrt(pow(objet->dir.x, 2) + pow(objet->dir.y, 2) + pow(objet->dir.z, 2));
+	tmp = sqrt(pow(objet->dir.x, 2) + pow(objet->dir.y, 2) + pow(objet->dir.z, 2));
+	disto = predis / tmp;
 	predis = objet->dir.x * vision.x + objet->dir.y * vision.y + objet->dir.z * vision.z + extra;
 	if (predis < 0)
 		predis *= -1;
-	distv = predis / sqrt(pow(objet->dir.x, 2) + pow(objet->dir.y, 2) + pow(objet->dir.z, 2));
+	distv = predis / tmp;
 	if (disto > distv)
 		return (0);
 	one = vision;
@@ -102,7 +106,7 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 		cordb = ft_coords_point_plane3(&objet->roof, vision);
 		unify = vec(cordb.x - objet->roof.center.x, cordb.y - objet->roof.center.y, cordb.z - objet->roof.center.z);
 		modx = sqrt(pow(unify.x, 2) + pow(unify.y, 2) + pow(unify.z, 2));
-			if (modx <= objet->radius)
+		if (modx <= objet->radius)
 			return (1);
 	}
 	rad = sqrt(objet->radius * objet->radius + (objet->height / 2) * (objet->height / 2));
