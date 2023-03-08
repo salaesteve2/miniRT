@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:05:11 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:24:49 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,4 +210,14 @@ t_vector	add(t_vector u, t_vector v);
 t_vector	provec(t_vector u, t_vector v);
 int			ft_objet(char *buf, t_conf *conf);
 void		ft_mlx_init(t_conf *conf);
+double		dot_prod(t_vector u, t_vector v);
+double		magnitude(t_vector u);
+t_vector	prod(t_vector u, double lamda);
+t_vector	add(t_vector u, t_vector v);
+t_vector	provec(t_vector u, t_vector v);
+t_vector	normalize(t_vector u);
+t_sphere	*sphere_init(double *param);
+t_cylinder	*cylinder_init(double *param);
+t_m_plane	*plane_init(double *param);
+void		ft_objetinit(double *paramsin, t_objet *obj);
 #endif
