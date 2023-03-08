@@ -6,11 +6,11 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 13:18:57 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/22 09:42:29 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:42:57 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../includes/geometry.h"
 
 //Sugerencia: terminar todos los string en -2 para poder procesar los 0
 
@@ -18,10 +18,6 @@ int	ft_process_range_ambient_light(double *nb)
 {
 	int	x;
 
-	/*while (nb[x] != -2)
-		x++;
-	if (x > 4)
-		return (1);*/
 	if (nb[0] < 0 || nb[0] > 1.0)
 		return (1);
 	x = 1;

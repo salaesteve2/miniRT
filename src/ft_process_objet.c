@@ -1,48 +1,52 @@
-#include "../includes/camera.h"
-#include "../includes/color.h"
-#include "../includes/file_reader.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_process_objet.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/08 15:43:01 by sasalama          #+#    #+#             */
+/*   Updated: 2023/03/08 15:44:25 by sasalama         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/geometry.h"
-#include "../includes/raytracer.h"
-#include "../includes/vector.h"
-#include "../includes/ft_process.h"
-#include "../includes/minirt.h"
 
-
-double dot_prod(t_vector u, t_vector v)
+double	dot_prod(t_vector u, t_vector v)
 {
-    return(u.x * v.x + u.y * v.y + u.z * v.z);
+	return (u.x * v.x + u.y * v.y + u.z * v.z);
 }
 
-double magnitude(t_vector u)
+double	magnitude(t_vector u)
 {
-	return(sqrt(dot_prod(u,u)));
+	return (sqrt(dot_prod(u,u)));
 }
 
-t_vector prod(t_vector u, double lamda)
+t_vector	prod(t_vector u, double lamda)
 {
 	return (vec(u.x * lamda, u.y * lamda, u.z * lamda));
 }
 
 
-t_vector add(t_vector u, t_vector v)
+t_vector	add(t_vector u, t_vector v)
 {
-	return(vec(u.x + v.x, u.y + v.y, u.z + v.z));
+	return (vec(u.x + v.x, u.y + v.y, u.z + v.z));
 }
 
 
-t_vector provec(t_vector u, t_vector v)
+t_vector	provec(t_vector u, t_vector v)
 {
-	double x;
-	double y;
-	double z;
+	double	x;
+	double	y;
+	double	z;
 
 	x = u.y * v.z - u.z * v.y;
 	y = - (u.x * v.z - u.z * v.x);
 	z = u.x * v.y - u.y * v.x;
-	return(vec(x, y, z));
+	return (vec(x, y, z));
 }
 
-t_vector normalize(t_vector u)
+t_vector	normalize(t_vector u)
 {
 	return (prod(u, 1.0 / magnitude(u)));
 }
@@ -52,7 +56,7 @@ t_sphere	*sphere_init(double *param)
 {
 	t_sphere	*sphere;
 
-	sphere = (t_sphere*)malloc(sizeof(t_sphere));
+	sphere = (t_sphere *)malloc(sizeof(t_sphere));
 	sphere->center = vec(param[0], param[1], param[2]);
 	sphere->radius = param[3] / 2;
 	sphere->color = ft_color(param[4], param[5], param[6]);
@@ -74,7 +78,7 @@ t_cylinder	*cylinder_init(double *param)
 
 t_m_plane	*plane_init(double *param)
 {
-	t_m_plane *plane;
+	t_m_plane	*plane;
 
 	plane = malloc(sizeof(t_m_plane));
 	plane->point = vec(param[0], param[1], param[2]);
@@ -83,18 +87,12 @@ t_m_plane	*plane_init(double *param)
 	return (plane);
 }
 
-void     ft_objetinit(double *paramsin, t_objet *obj)
+void	ft_objetinit(double *paramsin, t_objet *obj)
 {
 	if (obj->type == SPHERE)
-	{
 		obj->objet = (sphere_init(paramsin));
-	}
 	else if (obj->type == PLANE)
-    {
-        obj->objet = (plane_init(paramsin));
-    }
+		obj->objet = (plane_init(paramsin));
 	else if (obj->type == CYLINDER)
-    {
-        obj->objet = (cylinder_init(paramsin));
-    }
+		obj->objet = (cylinder_init(paramsin));
 }

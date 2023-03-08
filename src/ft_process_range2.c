@@ -6,11 +6,11 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 08:59:25 by sasalama          #+#    #+#             */
-/*   Updated: 2023/02/22 09:42:25 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:42:47 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../includes/geometry.h"
 
 int	ft_process_range_sphere(double *nb)
 {
@@ -44,7 +44,7 @@ int	ft_process_range_flat(double *nb)
 		x++;
 	}
 	if (nb[3] == 0 && nb[4] == 0 && nb[5] == 0)
-        return (1);
+		return (1);
 	return (0);
 }
 
@@ -67,6 +67,6 @@ int	ft_process_range_cylinder(double *nb)
 		x++;
 	}
 	if (nb[3] == 0 && nb[4] == 0 && nb[5] == 0)
-        return (1);
+		return (1);
 	return (0);
 }

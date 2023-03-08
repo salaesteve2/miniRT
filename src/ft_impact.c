@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_impact.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valarcon <valarcon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 13:11:36 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:49:52 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
-#include "../includes/camera.h"
-#include "../includes/color.h"
-#include "../includes/file_reader.h"
 #include "../includes/geometry.h"
-#include "../includes/raytracer.h"
-#include "../includes/vector.h"
-#include "../includes/ft_process.h"
 
 
 t_vector	ft_coords_point_plane2(t_circle *plane, t_vector line)
@@ -36,157 +29,62 @@ t_vector	ft_coords_point_plane2(t_circle *plane, t_vector line)
 
 t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 {
-	t_vector norm;
-	t_vector aux;
-	//double  path;
-	double	dist;
+	t_vector	norm;
+	t_vector	aux;
+	double		dist;
 	t_vector	midpoint;
-	t_vector two_points;
-	int		extra;
-	//t_vector	puntovision;
+	t_vector	two_points;
+	t_vector	normalplane;
+	t_vector	pointplane;
+	int			extra;
 	double      angle;
     double      modvis;
-    double      modaux;
+    double		modaux;
+	double		k;
+	double		distaux;
+	double	hipotenusa;
+	t_vector	result;
 
-	///el vector del punto mas cercano de vision al vector de direccion del cilindro.
 	norm = normalize(provec(obj->dir, vision));
-
-	//un vector entre dos puntos de las dos rectas cualesquiera
 	two_points = vec(obj->center.x, obj->center.y, obj->center.z);
-	//proyectamos este vector sobre el normalizado para hayar la distancia entre los dos mas cercanos de ambas rectas.
 	dist = dot_prod(two_points, norm);
 	if (dist > obj->radius)
-	{
 		return (vec(0, 0, 0));
-	}
-
 	extra = obj->dir.x * obj->center.x + obj->dir.y * obj->center.y + obj->dir.z * obj->center.z;
-
-	//ahora tengo las ecuaciones de las rectas vision = 0 y obj_>dir = extra;
-	//muevo una la distancia en direccion del vector normal que las une.
-
 	aux = vec(obj->dir.x + norm.x * dist, obj->dir.y + norm.y * dist, obj->dir.z + norm.z * dist);
-
-	///asumo el plano (definido por su normal) que contiene el vector de direccion del cilindro y el vector normal a ambos vectores que une los puntos mas cercanos.
-	
-	
-	t_vector normalplane = provec(norm, aux);
-
-	t_vector	pointplane;
-
+	normalplane = provec(norm, aux);
 	pointplane.x = obj->center.x;
 	pointplane.y = obj->center.y;
 	pointplane.z = obj->center.z;
-///busco su corte con el vector vision
-
-	double k = (normalplane.x * pointplane.x + normalplane.y * pointplane.y + normalplane.z * pointplane.z) / (normalplane.x * vision.x + normalplane.y * vision.y + normalplane.z * vision.z);
-
+	k = (normalplane.x * pointplane.x + normalplane.y * pointplane.y + normalplane.z * pointplane.z) / (normalplane.x * vision.x + normalplane.y * vision.y + normalplane.z * vision.z);
 	midpoint.x = k * vision.x;
 	midpoint.y = k * vision.y;
 	midpoint.z = k * vision.z;
-
-
-	//ahora calculare la distancia del punto medio al borde del cilindro en 2 dimensiones, es decir, sobre el plano de la base....
-	//asumo un triangulo rectangulo con lado dist y con hipotenusa radio. busco el lado qe define la distancia desde la proyeccion del punto medio (o mas cercano al eje del cilindro) del vector vision sobre la base; representacion de lo que me he de mover por vision para estar en el borde del cilindro sin tener en cuenta la altura.
-	
-	double distaux = sqrt(obj->radius * obj->radius - dist * dist);
-
-	///con ese lado y el angulo que forman los dos vectores busco la hipotenusa que forma el triangulo que incluye la altura ganada...
+	distaux = sqrt(obj->radius * obj->radius - dist * dist);
 	modvis = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-                    modaux = sqrt(obj->base.normal.x * obj->base.normal.x + obj->base.normal.y * obj->base.normal.y + obj->base.normal.z * obj->base.normal.z);
-        angle = acos((obj->base.normal.x * vision.x + obj->base.normal.y * vision.y + obj->base.normal.z * vision.z) / (modvis * modaux));
-
-		
-		angle = atan(dist / obj->radius);
-
-		double	hipotenusa = distaux / sin(angle);
-
-		///ahora si, muevo desde el punto mas cercano al eje del cilindro que tiene el vector vision una cantidad de la hipotenusa hayada, en la dirección opuesta de vision
-		t_vector	result;
-
-		if (vision.x + vision.y + vision.z > 0)
-		{
-			result.x = midpoint.x - vision.x * hipotenusa;
-			result.y = midpoint.y - vision.y * hipotenusa;
-			result.z = midpoint.z - vision.z * hipotenusa;
-		}
-		else
-		{
-			result.x = midpoint.x + vision.x * hipotenusa;
-            result.y = midpoint.y + vision.y * hipotenusa;
-            result.z = midpoint.z + vision.z * hipotenusa;
-		}
-		return (result);
-}
-
-/*{
-	(void)obj;
-	t_vector	pointbase;
-	t_vector	pointroof;
-	t_vector	b_center;
-	t_vector	r_center;
-	int			module1;
-	int			module2;
-	t_vector	result;
-	t_vector	result2;
-	t_vector	preresult;
-	double		angle;
-	double		modvis;
-	double		modaux;
-	double		catetocont;
-	t_vector	aux;
-	double		closeaux;
-
-	pointbase = ft_coords_point_plane2(&obj->base, vision);
-	pointroof = ft_coords_point_plane2(&obj->roof, vision);
-	b_center = vec(pointbase.x - obj->base.center.x, pointbase.y - obj->base.center.y, pointbase.z - obj->base.center.z);
-	r_center = vec(pointroof.x - obj->roof.center.x, pointroof.y - obj->roof.center.y, pointroof.z - obj->roof.center.z);
-	module1 = sqrt(b_center.x * b_center.x + b_center.y * b_center.y + b_center.z * b_center.z);
-	module2= sqrt(r_center.x * r_center.x + r_center.y * r_center.y + r_center.z * r_center.z);
-	modvis = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-	if (module1 < obj->radius)
+	modaux = sqrt(obj->base.normal.x * obj->base.normal.x + obj->base.normal.y * obj->base.normal.y + obj->base.normal.z * obj->base.normal.z);
+	angle = acos((obj->base.normal.x * vision.x + obj->base.normal.y * vision.y + obj->base.normal.z * vision.z) / (modvis * modaux));
+	angle = atan(dist / obj->radius);
+	hipotenusa = distaux / sin(angle);
+	if (vision.x + vision.y + vision.z > 0)
 	{
-		result = pointbase;
+		result.x = midpoint.x - vision.x * hipotenusa;
+		result.y = midpoint.y - vision.y * hipotenusa;
+		result.z = midpoint.z - vision.z * hipotenusa;
 	}
 	else
 	{
-
-		            modaux = sqrt(obj->base.normal.x * obj->base.normal.x + obj->base.normal.y * obj->base.normal.y + obj->base.normal.z * obj->base.normal.z);
-        angle = acos((obj->base.normal.x * vision.x + obj->base.normal.y * vision.y + obj->base.normal.z * vision.z) / (modvis * modaux));
-        catetocont = (module1 - obj->radius) / tan(angle);
-        aux = normalize(vec(obj->base.center.x - pointbase.x, obj->base.center.y - pointbase.y, obj->base.center.z - pointbase.z));
-        preresult = vec(pointbase.x + (module1 - obj->radius) * aux.x, pointbase.y + (module1 - obj->radius) * aux.y, pointbase.z + (module1 - obj->radius) * aux.z);
-		result = vec(preresult.x - catetocont * obj->base.normal.x, preresult.y - catetocont * obj->base.normal.y, preresult.z - catetocont * obj->base.normal.z);
-
+		result.x = midpoint.x + vision.x * hipotenusa;
+		result.y = midpoint.y + vision.y * hipotenusa;
+		result.z = midpoint.z + vision.z * hipotenusa;
 	}
-	if (module2 < obj->radius)
-    {
-		result2 = pointroof;
-    }
-    else
-    {
-
-
-		    modaux = sqrt(obj->roof.normal.x * obj->roof.normal.x + obj->roof.normal.y * obj->roof.normal.y + obj->roof.normal.z * obj->roof.normal.z);
-        angle = acos((obj->roof.normal.x * vision.x + obj->roof.normal.y * vision.y + obj->roof.normal.z * vision.z) / (modvis * modaux));
-        catetocont = (module2 - obj->radius) / tan(angle);
-        aux = normalize(vec(obj->roof.center.x - pointroof.x, obj->roof.center.y - pointroof.y, obj->roof.center.z - pointroof.z));
-        preresult = vec(pointroof.x + (module2 - obj->radius) * aux.x, pointroof.y + (module2 - obj->radius) * aux.y, pointroof.z + (module2 - obj->radius) * aux.z);
-		result2 = vec(preresult.x - catetocont * obj->roof.normal.x, preresult.y - catetocont * obj->roof.normal.y, preresult.z - catetocont * obj->roof.normal.z);
-
-    }
-
-	closeaux = result2.x * result2.x + result2.y * result2.y + result2.z * result2.z;
-	if (closeaux < result.x * result.x + result.y * result.y + result.z * result.z)
-		result = result2;
 	return (result);
-}*/
+}
 
 int	ft_impact(t_conf *conf, t_vector vision)
 {
-	////calcular si HAY interseccion entre el vector con origen 0,0,0 y algun objeto de la lista
-	t_list *list;
-	t_objet *obj;
+	t_list	*list;
+	t_objet	*obj;
 
 	list = conf->my_scene.obj_lst;
 	while (list->content)
@@ -216,7 +114,6 @@ int	ft_impact(t_conf *conf, t_vector vision)
 
 t_objet	*ft_closet(t_conf *conf, t_vector vision)
 {
-	//calcular la distancia a los objetos con intersección, discernir el mas cercano y rellenar las coordenadas del punto de impacto a la vez que retorna el t_objet del objeto
 	t_list		*list;
 	t_objet		*obj;
 	t_vector	coord;
