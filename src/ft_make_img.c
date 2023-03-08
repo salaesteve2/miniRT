@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:17:18 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:44:39 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_make_img(t_img *img, t_conf *conf)
 			}
 			else
 				sign = 1;
-			vecp = (aux / 540)  * tan(conf->my_scene.cam_lst.radian) * sign;
+			vecp = (aux / 540) * tan(conf->my_scene.cam_lst.radian) * sign;
 			vision = normalize(vec(conf->my_scene.cam_lst.view.x + conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg, conf->my_scene.cam_lst.view.y + conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg, conf->my_scene.cam_lst.view.z + conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg));
 			if (ft_impact(conf, vision) == 1)
 			{

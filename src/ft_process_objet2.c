@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 16:23:23 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:23:37 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:42:21 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_vector	normalize(t_vector u)
 {
 	return (prod(u, 1.0 / magnitude(u)));
 }
-
 
 t_sphere	*sphere_init(double *param)
 {

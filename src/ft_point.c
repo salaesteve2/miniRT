@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:16:57 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:44:26 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ double	ft_escalar_prod(t_vector a, t_vector b)
 {
 	double	res;
 
-	res = a.x * b.x + a.y *b.y + a.z + b.z;
+	res = a.x * b.x + a.y * b.y + a.z + b.z;
 	return (res);
 }
 
@@ -27,7 +27,6 @@ double	ft_module(t_vector v)
 	res = v.x * v.x + v.y * v.y + v.z * v.z;
 	res = sqrt(res);
 	return (res);
-
 }
 
 double	ft_distance_origin(double x, double y, double z)
@@ -63,10 +62,10 @@ void	ft_point(t_objet *obj, t_conf *conf)
 	t_cylinder		*aux3;
 	t_rgb			rgb;
 	unsigned char	tmp;
-	int				 extra;
+	int				extra;
 	t_vector		auxpoint;
-	int 			dist;
-	t_vector 		cnormal;
+	int				dist;
+	t_vector		cnormal;
 
 	if (obj->type == 1)
 	{

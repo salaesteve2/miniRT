@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:43:01 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:23:34 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:42:50 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ double	dot_prod(t_vector u, t_vector v)
 
 double	magnitude(t_vector u)
 {
-	return (sqrt(dot_prod(u,u)));
+	return (sqrt(dot_prod(u, u)));
 }
 
 t_vector	prod(t_vector u, double lamda)
@@ -27,12 +27,10 @@ t_vector	prod(t_vector u, double lamda)
 	return (vec(u.x * lamda, u.y * lamda, u.z * lamda));
 }
 
-
 t_vector	add(t_vector u, t_vector v)
 {
 	return (vec(u.x + v.x, u.y + v.y, u.z + v.z));
 }
-
 
 t_vector	provec(t_vector u, t_vector v)
 {

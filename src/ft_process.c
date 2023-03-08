@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:38:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:18:47 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:43:04 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	ft_objet(char *buf, t_conf *conf)
 	}
 	ft_lstadd_front(&(conf->my_scene.obj_lst), ft_lstnew(obj));
 	return (0);
-
 }
 
 int	ft_light(char *buf, t_conf *conf)

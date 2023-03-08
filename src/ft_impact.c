@@ -6,12 +6,11 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:15:44 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:46:05 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/geometry.h"
-
 
 t_vector	ft_coords_point_plane2(t_circle *plane, t_vector line)
 {
@@ -37,12 +36,12 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 	t_vector	normalplane;
 	t_vector	pointplane;
 	int			extra;
-	double      angle;
-    double      modvis;
-    double		modaux;
+	double		angle;
+	double		modvis;
+	double		modaux;
 	double		k;
 	double		distaux;
-	double	hipotenusa;
+	double		hipotenusa;
 	t_vector	result;
 
 	norm = normalize(provec(obj->dir, vision));
