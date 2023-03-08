@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:06:12 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:48:36 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ int	ft_parser(char **argv, t_conf *conf)
 	else if (conf->my_scene.cam_lst.view.x > conf->my_scene.cam_lst.view.y || conf->my_scene.cam_lst.view.x > conf->my_scene.cam_lst.view.z)
 		conf->my_scene.cam_lst.h = normalize(provec(conf->my_scene.cam_lst.view, vec(0, 1, 0)));
 	conf->my_scene.cam_lst.w = normalize(provec(conf->my_scene.cam_lst.view, conf->my_scene.cam_lst.h));
+
+	/*
 	printf("Luz ambient radio: %f\ncolor: %d, %d, %d\n", conf->my_scene.ambient.radius, conf->my_scene.ambient.color.red, conf->my_scene.ambient.color.green, conf->my_scene.ambient.color.blue);
 	printf("\nradio de light:%f\nejes x, y, z de light:%f, %f, %f\n", conf->my_scene.light_lst.radius, conf->my_scene.light_lst.pos.x, conf->my_scene.light_lst.pos.y, conf->my_scene.light_lst.pos.z);
 	printf("\nCamera grades:%f\n camera radianes: %f\n", conf->my_scene.cam_lst.grades, conf->my_scene.cam_lst.radian);
@@ -148,7 +150,7 @@ int	ft_parser(char **argv, t_conf *conf)
 		}
 		x = x->next;
 	}
-	printf("\n");
+	printf("\n");*/
 	return (0);
 }
 
