@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:31:25 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 15:37:49 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:21:36 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	ft_vector_to_sphere(t_vector vision, t_sphere *objet)
 	t_vector	preaux;
 
 	preaux = vec(objet->center.y * vision.z - objet->center.z * vision.y, objet->center.z * vision.x - objet->center.x * vision.z, objet->center.x * vision.y - objet->center.y * vision.x);
-	aux = sqrt(preaux.x * preaux.x + preaux.y * preaux.y + preaux.z * preaux.z);
+	aux = sqrt(pow(preaux.x, 2) + pow(preaux.y, 2) + pow(preaux.z, 2));
 	if (aux < 0)
 		aux *= -1;
-	aux2 = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
+	aux2 = sqrt(pow(vision.x, 2) + pow(vision.y, 2) + pow(vision.z, 2));
 	distcent = aux / aux2;
 	if (distcent < 0)
 		distcent *= -1;
@@ -81,11 +81,11 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 	predis = extra;
 	if (predis < 0)
 		predis *= -1;
-	disto = predis / sqrt(objet->dir.x * objet->dir.x + objet->dir.y * objet->dir.y + objet->dir.z * objet->dir.z);
+	disto = predis / sqrt(pow(objet->dir.x, 2) + pow(objet->dir.y, 2) + pow(objet->dir.z, 2));
 	predis = objet->dir.x * vision.x + objet->dir.y * vision.y + objet->dir.z * vision.z + extra;
 	if (predis < 0)
 		predis *= -1;
-	distv = predis / sqrt(objet->dir.x * objet->dir.x + objet->dir.y * objet->dir.y + objet->dir.z * objet->dir.z);
+	distv = predis / sqrt(pow(objet->dir.x, 2) + pow(objet->dir.y, 2) + pow(objet->dir.z, 2));
 	if (disto > distv)
 		return (0);
 	one = vision;
@@ -101,13 +101,13 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 			return (1);
 		cordb = ft_coords_point_plane3(&objet->roof, vision);
 		unify = vec(cordb.x - objet->roof.center.x, cordb.y - objet->roof.center.y, cordb.z - objet->roof.center.z);
-		modx = sqrt(unify.x * unify.x + unify.y * unify.y + unify.z * unify.z);
+		modx = sqrt(pow(unify.x, 2) + pow(unify.y, 2) + pow(unify.z, 2));
 			if (modx <= objet->radius)
 			return (1);
 	}
 	rad = sqrt(objet->radius * objet->radius + (objet->height / 2) * (objet->height / 2));
 	aux = (vec(vision.y * objet->dir.z - vision.z * objet->dir.y, vision.z * objet->dir.x - vision.x * objet->dir.z, vision.x * objet->dir.y - vision.y * objet->dir.x));
-	module = sqrt(aux.x * aux.x + aux.y * aux.y + aux.z * aux.z);
+	module = sqrt(pow(aux.x, 2) + pow(aux.y, 2) + pow(aux.z, 2));
 	matrix = vision.x * objet->dir.y * objet->center.z - vision.z * objet->dir.y * objet->center.x + vision.y * objet->dir.z * objet->center.x - vision.y * objet->dir.x * objet->center.z + vision.z * objet->dir.x * objet->center.y - vision.x * objet->dir.z * objet->center.y;
 	if (matrix < 0)
 		matrix *= -1;
@@ -125,7 +125,7 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 	p->center = pointplane;
 	p->normal = normalplane;
 	resultadocambiado = ft_coords_point_plane3(p, objet->dir);
-	dist_p_center = sqrt(resultadocambiado.x * resultadocambiado.x + resultadocambiado.y * resultadocambiado.y + resultadocambiado.z * resultadocambiado.z);
+	dist_p_center = sqrt(pow(resultadocambiado.x, 2) + pow(resultadocambiado.y, 2) + pow(resultadocambiado.z, 2));
 	if (dist_p_center > objet->height / 2)
 		return (0);
 	return (1);

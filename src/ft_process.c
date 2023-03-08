@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:38:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:08:08 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:18:47 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int	ft_objet(char *buf, t_conf *conf)
 	}
 	if (param == NULL)
 		return (1);
-	if ((obj->type == SPHERE && ft_process_range_sphere(param) == 1) || (obj->type == PLANE && ft_process_range_flat(param) == 1) || (obj->type == CYLINDER && ft_process_range_cylinder(param) == 1))
+	if ((obj->type == SPHERE && ft_process_range_sphere(param) == 1)
+		|| (obj->type == PLANE && ft_process_range_flat(param) == 1)
+		|| (obj->type == CYLINDER && ft_process_range_cylinder(param) == 1))
 	{
 		free(param);
 		free(obj);
@@ -93,7 +95,10 @@ int	ft_light(char *buf, t_conf *conf)
 		free(param);
 		return (1);
 	}
-	else if (conf->my_scene.light_lst.radius == 0 && conf->my_scene.light_lst.pos.x == 0 && conf->my_scene.light_lst.pos.y == 0 && conf->my_scene.light_lst.pos.z == 0)
+	else if (conf->my_scene.light_lst.radius == 0
+		&& conf->my_scene.light_lst.pos.x == 0
+		&& conf->my_scene.light_lst.pos.y == 0
+		&& conf->my_scene.light_lst.pos.z == 0)
 	{
 		conf->my_scene.light_lst.pos = vec(param[0], param[1], param[2]);
 		conf->my_scene.light_lst.radius = param[3];
@@ -112,7 +117,9 @@ int	ft_camera(char *buff, t_conf *conf)
 		return (1);
 	if (ft_process_range_camara(params) == 1)
 		return (1);
-	else if (conf->my_scene.cam_lst.pos.x == 0 && conf->my_scene.cam_lst.pos.y == 0 && conf->my_scene.cam_lst.pos.z == 0)
+	else if (conf->my_scene.cam_lst.pos.x == 0
+		&& conf->my_scene.cam_lst.pos.y == 0
+		&& conf->my_scene.cam_lst.pos.z == 0)
 	{
 		camera(buff, conf);
 		return (0);
@@ -151,7 +158,10 @@ t_conf	ft_process(char **buff)
 			error = ft_camera(buff[i], conf);
 		else if (buff[i][x] && buff[i][x] == 'L')
 			error = ft_light(buff[i], conf);
-		else if (buff[i][x] && buff[i][x + 1] && ((buff[i][x] == 's' && buff[i][x + 1] == 'p') || (buff[i][x] == 'p' && buff[i][x + 1] == 'l') || (buff[i][x] == 'c' && buff[i][x + 1] == 'y')))
+		else if (buff[i][x] && buff[i][x + 1]
+			&& ((buff[i][x] == 's' && buff[i][x + 1] == 'p')
+			|| (buff[i][x] == 'p' && buff[i][x + 1] == 'l')
+			|| (buff[i][x] == 'c' && buff[i][x + 1] == 'y')))
 			error = ft_objet(buff[i], conf);
 		else if (buff[i][x])
 		{

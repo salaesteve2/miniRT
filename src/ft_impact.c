@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 15:49:52 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:15:44 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 	midpoint.y = k * vision.y;
 	midpoint.z = k * vision.z;
 	distaux = sqrt(obj->radius * obj->radius - dist * dist);
-	modvis = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-	modaux = sqrt(obj->base.normal.x * obj->base.normal.x + obj->base.normal.y * obj->base.normal.y + obj->base.normal.z * obj->base.normal.z);
+	modvis = sqrt(pow(vision.x, 2) + pow(vision.y, 2) + pow(vision.z, 2));
+	modaux = sqrt(pow(obj->base.normal.x, 2) + pow(obj->base.normal.y, 2) + pow(obj->base.normal.z, 2));
 	angle = acos((obj->base.normal.x * vision.x + obj->base.normal.y * vision.y + obj->base.normal.z * vision.z) / (modvis * modaux));
 	angle = atan(dist / obj->radius);
 	hipotenusa = distaux / sin(angle);
@@ -195,8 +195,8 @@ t_vector	ft_coords_point_sphere(t_vector vision, t_sphere *objet)
 	int			path;
 	t_vector	result;
 
-	distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
-	discenorig = sqrt(objet->center.x * objet->center.x + objet->center.y * objet->center.y + objet->center.z * objet->center.z);
+	distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(pow(vision.x, 2) + pow(vision.y, 2) + pow(vision.z, 2));
+	discenorig = sqrt(pow(objet->center.x, 2) + pow(objet->center.y, 2) + pow(objet->center.z, 2));
 	longray = sqrt(distcent * distcent + discenorig * discenorig);
 	extra = sqrt(distcent * distcent + objet->radius * objet->radius);
 	path = longray - extra;

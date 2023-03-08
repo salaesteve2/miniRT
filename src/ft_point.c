@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 15:47:02 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:16:57 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_dist_point_plane(t_vector plane, int extra, t_vector point)
 {
 	int	res;
 
-	res = ((plane.x * point.x + plane.y * point.y + plane.z * point.z + extra) / sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z));
+	res = ((plane.x * point.x + plane.y * point.y + plane.z * point.z + extra) / sqrt(pow(plane.x, 2) + pow(plane.y, 2) + pow(plane.z, 2)));
 	if (res < 0)
 		res *= -1;
 	return (res);

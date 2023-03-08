@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 15:56:05 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:17:18 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_make_img(t_img *img, t_conf *conf)
 				if (conf->my_pixel.y == 360 && conf->my_pixel.x == 540)
 					printf("hgafsdg");
 				obj = ft_closet(conf, vision);
-				if (obj != NULL)
+				if (obj)
 					ft_point(obj, conf);
 			}
 			else
