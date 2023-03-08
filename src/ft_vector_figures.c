@@ -18,6 +18,25 @@ int	ft_vector_to_sphere(t_vector vision, t_sphere *objet)
 		return (1);
 }
 
+double	ft_proyectvector2(t_vector a, t_vector nor)
+{
+	return (dot_prod(a, nor) / (ft_module(nor) * ft_module(nor)));
+
+}
+
+t_vector	ft_coords_point_plane3(t_circle *plane, t_vector line)
+{
+	double		nb;
+	double		res;
+	t_vector	point;
+
+	nb = -(plane->center.x * plane->normal.x) - (plane->center.y * plane->normal.y) - (plane->center.z * plane->normal.z);
+	res = -nb / ((line.x * plane->normal.x) + (line.y * plane->normal.y) + (line.z * plane->normal.z));
+	point.x = res * line.x;
+	point.y = res * line.y;
+	point.z = res * line.z;
+	return (point);
+}
 
 int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 {
@@ -29,6 +48,36 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
     double         matrix;
     //double         distancia;
     //double         distcent2;
+
+
+    t_vector    one;
+    t_vector    orig;
+    t_vector corda;
+    t_vector cordb;
+    t_vector unify;
+    double  modx;
+
+    one = vision;
+    orig = vec(0, 0, 0);
+
+    double  dist = ft_proyectvector2(one, objet->roof.normal);
+    double  dist2 = ft_proyectvector2(orig, objet->roof.normal);
+
+    if (dist != dist2)
+    {
+
+        corda = ft_coords_point_plane3(&objet->base, vision);
+        unify = vec(corda.x - objet->base.center.x, corda.y - objet->base.center.y, corda.z - objet->base.center.z);
+        modx = sqrt(unify.x * unify.x + unify.y * unify.y + unify.z * unify.z);
+        if (modx <= objet->radius)
+            return (1);
+        cordb = ft_coords_point_plane3(&objet->roof, vision);
+        unify = vec(cordb.x - objet->roof.center.x, cordb.y - objet->roof.center.y, cordb.z - objet->roof.center.z);
+        modx = sqrt(unify.x * unify.x + unify.y * unify.y + unify.z * unify.z);
+         if (modx <= objet->radius)
+            return (1);
+    }
+
 
 	//radio de la esfera que abarca todo el cilindro
     rad = sqrt(objet->radius * objet->radius + (objet->height / 2) * (objet->height / 2));
@@ -44,14 +93,119 @@ int	ft_vector_to_cylinder(t_vector vision, t_cylinder *objet)
 		matrix *= -1;
 
     distcent = matrix / module;
+	if (distcent < 0)
+        distcent *= -1;
     if (distcent > objet->radius)
         return (0);
+	/////////
+	///
+	/*
 	aux = vec(objet->center.y * vision.z - objet->center.z * vision.y, objet->center.z * vision.x - objet->center.x * vision.z, objet->center.x * vision.y - objet->center.y * vision.x);
 	module = sqrt(aux.x * aux.x + aux.y * aux.y + aux.z * aux.z);
 	matrix = sqrt(vision.x * vision.x + vision.y * vision.y + vision.z * vision.z);
 	  distcent = module / matrix;
     if (distcent > rad)
         return (0);
+		////////
+		*/
+
+
+	 ///el vector del punto mas cercano de vision al vector de direccion del cilindro.
+    t_vector norm = normalize(provec(objet->dir, vision));
+
+    //un vector entre dos puntos de las dos rectas cualesquiera
+   // t_vector two_points = vec(objet->center.x, objet->center.y, objet->center.z);
+    //proyectamos este vector sobre el normalizado para hayar la distancia entre los dos mas cercanos de ambas rectas.
+    //double dist = dot_prod(two_points, norm);
+  /*  if (dist > objet->radius)
+    {
+        return (0);
+    }*/
+
+    /*extra = obj->dir.x * obj->center.x + obj->dir.y * obj->center.y + obj->dir.z * obj->center.z;*/
+
+   /* //muevo una la distancia en direccion del vector normal que las une.
+
+    aux = vec(objet->dir.x * dist + norm.x, objet->dir.y * dist + norm.y, objet->dir.z * dist + norm.z);*/
+
+    ///asumo el plano (definido por su normal) que contiene el vector de vision y el vector normal a ambos vectores que une los puntos mas cercanos.
+
+
+    t_vector normalplane = provec(vision, norm);
+
+    t_vector    pointplane;
+
+	///en vez de adaptar las funciones, cambio el 0,0,0 al centro del cilindro:
+
+    pointplane.x = (-1) * objet->center.x;
+    pointplane.y = (-1) * objet->center.y;
+    pointplane.z = (-1) * objet->center.z;
+
+	t_vector resultadocambiado;
+	t_circle *p;
+	p = (t_circle *)malloc(sizeof(t_circle));
+	p->center = pointplane;
+	p->normal = normalplane;
+
+	///busco su corte con el vector normal al cilindro
+	resultadocambiado = ft_coords_point_plane3(p, objet->dir);
+//ahora devolvería al 0,0,0 en cámara (+objet->center a resultadocambiado) y sacaria el vector entre objet center y mi punto (resultadocambiado - objet->center); osea que no hago nada mejor...
+	
+	//resultadocambiado = vec(resultadocambiado.x + objet->center.x, resultadocambiado.y + objet->center.y, resultadocambiado.z + objet->center.z);
+//
+
+
+	//t_vector dist_points = vec(resultadocambiado.x - objet->center.x, ...
+	double dist_p_center;
+   dist_p_center = sqrt(resultadocambiado.x * resultadocambiado.x + resultadocambiado.y * resultadocambiado.y + resultadocambiado.z * resultadocambiado.z);
+	//free (p);
+	//printf("DIST %f\n en %f %f %f \n", dist_p_center, vision.x, vision.y, vision.z);
+	if (dist_p_center > objet->height / 2)
+		return (0);
+
+
+
+
+
+/*
+	  t_vector    one;
+    t_vector    orig;
+	t_vector corda;
+	t_vector cordb;
+	t_vector unify;
+	double	modx;
+
+    one = vision;
+    orig = vec(0, 0, 0);
+
+    double  dist = ft_proyectvector(one, objet->base.normal);
+    double  dist2 = ft_proyectvector(orig objet->base.normal);
+
+    if (dist != dist2)
+	{
+
+		corda = ft_coords_point_plane3(objet->base, vision);
+		unify = vec(corda.x - objet->base.center.x, corda.y - objet->base.center.y, corda.z - objet->base.center.z);
+		modx = sqrt(unify.x * unify.x + unify.y * unify.y + unify.z * unify.z);
+		if (modx <= objet->radius)
+			return (1);
+		cordb = ft_coords_point_plane3(objet->roof, vision);
+		unify = vec(cordb.x - objet->roof.center.x, cordb.y - objet->roof.center.y, cordb.z - objet->roof.center.z);
+        modx = sqrt(unify.x * unify.x + unify.y * unify.y + unify.z * unify.z);
+		 if (modx <= objet->radius)
+            return (1);
+	}
+
+*/
+
+
+
+
+   /* double k = (normalplane.x * pointplane.x + normalplane.y * pointplane.y + normalplane.z * pointplane.z) / (normalplane.x * vision.x + normalplane.y * vision.y + normalplane.z * vision.z);
+
+    midpoint.x = k * vision.x;
+    midpoint.y = k * vision.y;
+    midpoint.z = k * vision.z;*/
 
 	////AQUI SILENCIADAS LAS ESFERAS DE SEGURIDAD
  /*aux = vec((objet->center.y + objet->dir.y * objet->height) * vision.z - (objet->center.z + objet->dir.z * objet->height) * vision.y, (objet->center.z + objet->dir.z * objet->height) * vision.x - (objet->center.x + objet->dir.x * objet->height) * vision.z, (objet->center.x + objet->dir.x * objet->height) * vision.y - (objet->center.y + objet->dir.y * objet->height) * vision.x);

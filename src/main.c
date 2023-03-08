@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/06 13:42:41 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/08 10:54:22 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ft_make_img(t_img *img, t_conf *conf)
              }
              else
                  sign = 1;
-		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian);
+		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian) * sign;
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
