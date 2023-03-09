@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:44:39 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/09 10:56:30 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,40 +43,22 @@ void	ft_make_img(t_img *img, t_conf *conf)
 	double			vecg;
 	double			vecp;
 	t_vector		vision;
-	int				sign;
 	double			aux;
-	int				aux2;
 
 	tab = (void *)img->data;
 	conf->my_pixel.x = 0;
 	while (conf->my_pixel.x < 1080)
 	{
 		aux = (conf->my_pixel.x - 540);
-		if (aux < 0)
-		{
-			sign = -1;
-			aux *= -1;
-		}
-		else
-			sign = 1;
-		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian) * sign;
+		vecg = (aux / 540) * tan(conf->my_scene.cam_lst.radian);
 		conf->my_pixel.y = 0;
 		while (conf->my_pixel.y < 720)
 		{
 			aux = (conf->my_pixel.y - 360);
-			if (aux < 0)
-			{
-				sign = -1;
-				aux *= -1;
-			}
-			else
-				sign = 1;
-			vecp = (aux / 540) * tan(conf->my_scene.cam_lst.radian) * sign;
+			vecp = (aux / 540) * tan(conf->my_scene.cam_lst.radian);
 			vision = normalize(vec(conf->my_scene.cam_lst.view.x + conf->my_scene.cam_lst.h.x * vecp + conf->my_scene.cam_lst.w.x * vecg, conf->my_scene.cam_lst.view.y + conf->my_scene.cam_lst.h.y * vecp + conf->my_scene.cam_lst.w.y * vecg, conf->my_scene.cam_lst.view.z + conf->my_scene.cam_lst.h.z * vecp + conf->my_scene.cam_lst.w.z * vecg));
 			if (ft_impact(conf, vision) == 1)
 			{
-				if (conf->my_pixel.y == 360 && conf->my_pixel.x == 540)
-					printf("hgafsdg");
 				obj = ft_closet(conf, vision);
 				if (obj)
 					ft_point(obj, conf);
@@ -85,11 +67,6 @@ void	ft_make_img(t_img *img, t_conf *conf)
 			{
 				s = rgb_to_int(conf->my_scene.ambient.color);
 				conf->my_pixel.color = s;
-			}
-			if (conf->my_pixel.y == 360 && conf->my_pixel.x == 540)
-			{
-				aux2 = ft_impact(conf, vision);
-				printf("pixel enmedio: %i\n %i\ni vision: %f %f %f \n", conf->my_pixel.color, aux2, vision.x, vision.y, vision.z);
 			}
 			*tab[conf->my_pixel.y][conf->my_pixel.x] = conf->my_pixel.color;
 			conf->my_pixel.y++;
