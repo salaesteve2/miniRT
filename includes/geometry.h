@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/08 16:24:49 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:34:31 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,21 @@ typedef struct s_rgb
 	int				blue;
 }				t_rgb;
 
+typedef struct s_v
+{
+    double  x;
+    double  y;
+    double  z;
+}               t_v;
+
 typedef struct s_vector
 {
 	double	x;
 	double	y;
 	double	z;
+	t_v	o;
 }				t_vector;
+
 typedef struct s_light
 {
 	t_vector	pos;

@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 09:45:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/09 10:58:36 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:09:54 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,16 @@ int	ft_parser(char **argv, t_conf *conf)
 	conf->my_scene.cam_lst.pos.y = 0;
 	conf->my_scene.cam_lst.pos.z = 0;
 	conf->my_scene.cam_lst.view = normalize(conf->my_scene.cam_lst.view);
+	/*conf->my_scene.cam_lst.h =  normalize(provec(conf->my_scene.cam_lst.view, vec(0, 0, 1)));
+	conf->my_scene.cam_lst.w =  normalize(provec(conf->my_scene.cam_lst.view, vec(1, 0, 0)));*/
 	if (conf->my_scene.cam_lst.view.z <= conf->my_scene.cam_lst.view.y && conf->my_scene.cam_lst.view.z <= conf->my_scene.cam_lst.view.x)
-		conf->my_scene.cam_lst.h = normalize(provec(conf->my_scene.cam_lst.view, vec(0, 0, 1)));
+		conf->my_scene.cam_lst.w = normalize(provec(conf->my_scene.cam_lst.view, vec(0, 0, 1)));
 	else if (conf->my_scene.cam_lst.view.y <= conf->my_scene.cam_lst.view.x && conf->my_scene.cam_lst.view.y <= conf->my_scene.cam_lst.view.z)
-		conf->my_scene.cam_lst.h = normalize(provec(conf->my_scene.cam_lst.view, vec(0, 1, 0)));
+		conf->my_scene.cam_lst.w = normalize(provec(conf->my_scene.cam_lst.view, vec(0, 1, 0)));
 	else if (conf->my_scene.cam_lst.view.x <= conf->my_scene.cam_lst.view.y && conf->my_scene.cam_lst.view.x <= conf->my_scene.cam_lst.view.z)
-		conf->my_scene.cam_lst.h = normalize(provec(conf->my_scene.cam_lst.view, vec(1, 0, 0)));
-	conf->my_scene.cam_lst.w = normalize(provec(conf->my_scene.cam_lst.view, conf->my_scene.cam_lst.h));
+		conf->my_scene.cam_lst.w = normalize(provec(conf->my_scene.cam_lst.view, vec(1, 0, 0)));
+	conf->my_scene.cam_lst.w = (provec(conf->my_scene.cam_lst.view, conf->my_scene.cam_lst.w));
+	conf->my_scene.cam_lst.h = (provec(conf->my_scene.cam_lst.view, conf->my_scene.cam_lst.w));
 
 	/*
 	printf("Luz ambient radio: %f\ncolor: %d, %d, %d\n", conf->my_scene.ambient.radius, conf->my_scene.ambient.color.red, conf->my_scene.ambient.color.green, conf->my_scene.ambient.color.blue);
