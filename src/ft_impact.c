@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 09:01:48 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/09 13:33:07 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/10 10:13:31 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_vector	ft_coords_point_plane2(t_circle *plane, t_vector line)
 	double		res;
 	t_vector	point;
 
-	nb = -(plane->center.x * plane->normal.x) - (plane->center.y * plane->normal.y) - (plane->center.z * plane->normal.z);
+	nb = -((plane->center.x - line.o.x) * plane->normal.x) - ((plane->center.y - line.o.y) * plane->normal.y) - ((plane->center.z - line.o.z) * plane->normal.z);
 	res = -nb / ((line.x * plane->normal.x) + (line.y * plane->normal.y) + (line.z * plane->normal.z));
 	point.x = res * line.x;
 	point.y = res * line.y;
@@ -45,16 +45,16 @@ t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision)
 	t_vector	result;
 
 	norm = normalize(provec(obj->dir, vision));
-	two_points = vec(obj->center.x, obj->center.y, obj->center.z);
+	two_points = vec((obj->center.x - vision.o.x), (obj->center.y - vision.o.y), (obj->center.z - vision.o.z));
 	dist = dot_prod(two_points, norm);
 	if (dist > obj->radius)
 		return (vec(0, 0, 0));
 	//extra = obj->dir.x * obj->center.x + obj->dir.y * obj->center.y + obj->dir.z * obj->center.z;
 	aux = vec(obj->dir.x + norm.x * dist, obj->dir.y + norm.y * dist, obj->dir.z + norm.z * dist);
 	normalplane = provec(norm, aux);
-	pointplane.x = obj->center.x;
-	pointplane.y = obj->center.y;
-	pointplane.z = obj->center.z;
+	pointplane.x = obj->center.x - vision.o.x;
+	pointplane.y = obj->center.y - vision.o.y;
+	pointplane.z = obj->center.z - vision.o.z;
 	k = (normalplane.x * pointplane.x + normalplane.y * pointplane.y + normalplane.z * pointplane.z) / (normalplane.x * vision.x + normalplane.y * vision.y + normalplane.z * vision.z);
 	midpoint.x = k * vision.x;
 	midpoint.y = k * vision.y;
@@ -194,8 +194,8 @@ t_vector	ft_coords_point_sphere(t_vector vision, t_sphere *objet)
 	int			path;
 	t_vector	result;
 
-	distcent = (vision.x * objet->center.x + vision.y * objet->center.y + vision.z * objet->center.z) / sqrt(pow(vision.x, 2) + pow(vision.y, 2) + pow(vision.z, 2));
-	discenorig = sqrt(pow(objet->center.x, 2) + pow(objet->center.y, 2) + pow(objet->center.z, 2));
+	distcent = (vision.x * (objet->center.x - vision.o.x) + vision.y * (objet->center.y - vision.o.y) + vision.z * (objet->center.z - vision.o.z)) / sqrt(pow(vision.x, 2) + pow(vision.y, 2) + pow(vision.z, 2));
+	discenorig = sqrt(pow((objet->center.x - vision.o.x), 2) + pow((objet->center.y - vision.o.y), 2) + pow((objet->center.z - vision.o.z), 2));
 	longray = sqrt(distcent * distcent + discenorig * discenorig);
 	extra = sqrt(distcent * distcent + objet->radius * objet->radius);
 	path = longray - extra;

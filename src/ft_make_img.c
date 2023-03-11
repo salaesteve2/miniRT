@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:08 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/10 09:36:09 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:05:51 by valarcon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ void	ft_make_img(t_img *img, t_conf *conf)
 					printf("hgafsdg");*/
 				obj = ft_closet(conf, vision);
 				if (obj)
+				{
+					//// ?¿?¿conf->my_camera.view.o = vision.o;
 					ft_point(obj, conf);
+				}
 			}
 			else
 			{
