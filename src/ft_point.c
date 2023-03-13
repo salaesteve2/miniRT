@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_point.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valarcon <valarcon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/11 13:22:38 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/13 10:10:59 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@ double	ft_module(t_vector v)
 	return (res);
 }
 
-/*double	ft_distance_origin(double x, double y, double z)
-{
-	double	res;
-
-	res = x * x + y * y + z * z;
-	res = sqrt(res);
-	return (res);
-}*/
-
 int	ft_dist_point_plane(t_vector plane, int extra, t_vector point)
 {
 	int	res;
@@ -53,6 +44,88 @@ int	rgb_to_int(const t_rgb rgb)
 	return (rgb.red << 16 | rgb.green << 8 | rgb.blue);
 }
 
+int	ft_coords_light_sphere(t_sphere *sphere, t_vector light)
+{
+	t_vector	aux;
+	t_vector	aux2;
+
+	aux.o.x = light.x;
+	aux.o.y = light.y;
+	aux.o.z = light.z;
+	aux.x = sphere->intersection.x - light.x;
+	aux.y = sphere->intersection.y - light.y;
+	aux.z = sphere->intersection.z - light.z;
+	aux2 = ft_coords_point_sphere(aux, sphere);
+	if (sphere->intersection.x == aux2.x && sphere->intersection.y == aux2.y && sphere->intersection.y == aux2.y)
+		return (1);
+	return (0);
+}
+
+int	ft_coords_light_cylinder(t_cylinder *cylinder, t_vector light)
+{
+	t_vector	aux;
+	t_vector	aux2;
+
+	aux.o.x = light.x;
+	aux.o.y = light.y;
+	aux.o.z = light.z;
+	aux.x = cylinder->intersection.x - light.x;
+	aux.y = cylinder->intersection.y - light.y;
+	aux.z = cylinder->intersection.z - light.z;
+	aux2 = ft_coords_point_cylinder(cylinder, aux);
+	if (cylinder->intersection.x == aux2.x && cylinder->intersection.y == aux2.y && cylinder->intersection.y == aux2.y)
+		return (1);
+	return (0);
+}
+
+int	ft_coords_light_plane(t_m_plane *plane, t_vector light)
+{
+	t_vector	aux;
+	t_vector	aux2;
+
+	aux.o.x = light.x;
+	aux.o.y = light.y;
+	aux.o.z = light.z;
+	aux.x = plane->intersection.x - light.x;
+	aux.y = plane->intersection.y - light.y;
+	aux.z = plane->intersection.z - light.z;
+	aux2 = ft_coords_point_plane(plane, aux);
+	if (plane->intersection.x == aux2.x && plane->intersection.y == aux2.y && plane->intersection.y == aux2.y)
+		return (1);
+	return (0);
+}
+
+int	ft_light_intersec(t_objet *obj, t_conf *conf)
+{
+	t_sphere	*sphere;
+	t_cylinder	*cylinder;
+	t_m_plane	*plane;
+	int			coords_light;
+
+	if (obj->type == 1)
+	{
+		sphere = (t_sphere *)obj->objet;
+		coords_light = ft_coords_light_sphere(sphere, conf->my_scene.light_lst.pos);
+		if (coords_light == 1)
+			return (1);
+	}
+	if (obj->type == 2)
+	{
+		cylinder = (t_cylinder *)obj->objet;
+		coords_light = ft_coords_light_cylinder(cylinder, conf->my_scene.light_lst.pos);
+		if (coords_light == 1)
+			return (1);
+	}
+	if (obj->type == 1)
+	{
+		plane = (t_m_plane *)obj->objet;
+		coords_light = ft_coords_light_plane(plane, conf->my_scene.light_lst.pos);
+		if (coords_light == 1)
+			return (1);
+	}
+	return (0);
+}
+
 void	ft_point(t_objet *obj, t_conf *conf)
 {
 	double			intensity;
@@ -61,36 +134,37 @@ void	ft_point(t_objet *obj, t_conf *conf)
 	t_m_plane		*aux2;
 	t_cylinder		*aux3;
 	t_rgb			rgb;
-	unsigned char	tmp;
+	int				tmp;
 	int				extra;
 	t_vector		auxpoint;
 	int				dist;
 	t_vector		cnormal;
 	double			distance;
+	int				buf;
 
 	if (obj->type == 1)
 	{
 		aux = (t_sphere *)obj->objet;
 		perp = normalize(vec(aux->intersection.x - aux->center.x, aux->intersection.y - aux->center.y, aux->intersection.z - aux->center.z));
-
-
-		intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux->intersection.x, conf->my_scene.light_lst.pos.y - aux->intersection.y, conf->my_scene.light_lst.pos.z - aux->intersection.z), perp);
+		buf = ft_light_intersec(obj, conf);
+		if (buf == 1)
+			intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux->intersection.x, conf->my_scene.light_lst.pos.y - aux->intersection.y, conf->my_scene.light_lst.pos.z - aux->intersection.z), perp);
+		else
+			intensity = 0;
 		auxpoint = vec(aux->intersection.x - conf->my_scene.light_lst.pos.x, aux->intersection.y - conf->my_scene.light_lst.pos.y, aux->intersection.z - conf->my_scene.light_lst.pos.z);
 		distance = sqrt(auxpoint.x * auxpoint.x + auxpoint.y * auxpoint.y + auxpoint.z * auxpoint.z);
-
-		//intensity = 0.5;
 		if (intensity < 0)
-           intensity = 0;
-		rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + (intensity/distance * (conf->my_scene.light_lst.radius)))  * aux->color.red;
+			intensity = 0;
+		rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + (intensity / distance * (conf->my_scene.light_lst.radius))) * aux->color.red;
 		if (rgb.red > 255)
 			rgb.red = 255;
-		rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + (intensity/distance * (conf->my_scene.light_lst.radius))) * aux->color.green;
+		rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + (intensity / distance * (conf->my_scene.light_lst.radius))) * aux->color.green;
 		if (rgb.green > 255)
             rgb.green = 255;
-		rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + (intensity/distance * (conf->my_scene.light_lst.radius))) * aux->color.blue;
+		rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + (intensity / distance * (conf->my_scene.light_lst.radius))) * aux->color.blue;
 		if (rgb.blue > 255)
             rgb.blue = 255;
-		tmp = (unsigned char)rgb_to_int(rgb);
+		tmp = rgb_to_int(rgb);
 		conf->my_pixel.color = tmp;
 	}
 	else if (obj->type == 2)
@@ -98,26 +172,32 @@ void	ft_point(t_objet *obj, t_conf *conf)
 		aux3 = (t_cylinder *)obj->objet;
 		if (aux3->base.plane_ecuation.x * aux3->intersection.x + aux3->base.plane_ecuation.y * aux3->intersection.y + aux3->base.plane_ecuation.z * aux3->intersection.z == aux3->base.plane_ecuation.x * aux3->base.center.x + aux3->base.plane_ecuation.y * aux3->base.center.y + aux3->base.plane_ecuation.z * aux3->base.center.z)
 		{
-			intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), aux3->base.normal);
-			//intensity = 0.5;
+			buf = ft_light_intersec(obj, conf);
+			if (buf == 1)
+				intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), aux3->base.normal);
+			else
+				intensity = 0;
 			if (intensity < 0)
-           		intensity = 0;
+				intensity = 0;
 			rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->base.color.red;
 			rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->base.color.green;
 			rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->base.color.blue;
-			tmp = (unsigned char)rgb_to_int(rgb);
+			tmp = rgb_to_int(rgb);
 			conf->my_pixel.color = tmp;
 		}
 		else if (aux3->roof.plane_ecuation.x * aux3->intersection.x + aux3->roof.plane_ecuation.y * aux3->intersection.y + aux3->roof.plane_ecuation.z * aux3->intersection.z == aux3->roof.plane_ecuation.x * aux3->roof.center.x + aux3->roof.plane_ecuation.y * aux3->roof.center.y + aux3->roof.plane_ecuation.z * aux3->roof.center.z)
 		{
-			intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), aux3->roof.normal);
-			//intensity = 0.5;
+			buf = ft_light_intersec(obj, conf);
+			if (buf == 1)
+				intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), aux3->roof.normal);
+			else
+				intensity = 0;
 			if (intensity < 0)
-           		intensity = 0;
+				intensity = 0;
 			rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->roof.color.red;
-            rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->roof.color.green;
-            rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->roof.color.blue;
-			tmp = (unsigned char)rgb_to_int(rgb);
+			rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->roof.color.green;
+			rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->roof.color.blue;
+			tmp = rgb_to_int(rgb);
 			conf->my_pixel.color = tmp;
 		}
 		else
@@ -126,31 +206,34 @@ void	ft_point(t_objet *obj, t_conf *conf)
 			dist = ft_dist_point_plane(aux3->base.plane_ecuation, extra, aux3->intersection);
 			auxpoint = vec(aux3->intersection.x + aux3->body.dir.x * dist, aux3->intersection.y + aux3->body.dir.y * dist, aux3->intersection.z + aux3->body.dir.z * dist);
 			cnormal = vec(auxpoint.x - aux3->body.center.x, auxpoint.y - aux3->body.center.y, auxpoint.z - aux3->body.center.z);
-			intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), cnormal);
+			buf = ft_light_intersec(obj, conf);
+			if (buf == 1)
+				intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux3->intersection.x, conf->my_scene.light_lst.pos.y - aux3->intersection.y, conf->my_scene.light_lst.pos.z - aux3->intersection.z), cnormal);
+			else
+				intensity = 0;
 			if (intensity < 0)
-          		 intensity = 0;
-			//intensity = 0.5;
-			 rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.red;
-            rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.green;
-            rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.blue;
-			tmp = (unsigned char)rgb_to_int(rgb);
+				intensity = 0;
+			rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.red;
+			rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.green;
+			rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux3->color.blue;
+			tmp = rgb_to_int(rgb);
 			conf->my_pixel.color = tmp;
 		}
 	}
 	else if (obj->type == 3)
 	{
 		aux2 = (t_m_plane *)obj->objet;
-
-		intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux2->intersection.x, conf->my_scene.light_lst.pos.y - aux2->intersection.y, conf->my_scene.light_lst.pos.z - aux2->intersection.z), aux2->normal);
-	/*	intensity = ft_escalar_prod(vec( aux2->intersection.x - conf->my_scene.light_lst.pos.x,  aux2->intersection.y - conf->my_scene.light_lst.pos.y,  aux2->intersection.z - conf->my_scene.light_lst.pos.z), aux2->normal);*/
+		buf = ft_light_intersec(obj, conf);
+		if (buf == 1)
+			intensity = ft_escalar_prod(vec(conf->my_scene.light_lst.pos.x - aux2->intersection.x, conf->my_scene.light_lst.pos.y - aux2->intersection.y, conf->my_scene.light_lst.pos.z - aux2->intersection.z), aux2->normal);
+		else
+			intensity = 0;
 		if (intensity < 0)
-		   intensity = 0;	
-
-		//intensity = 0.5;
-		 rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.red;
-            rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.green;
-            rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.blue;
-		tmp = (unsigned char)rgb_to_int(rgb);
+			intensity = 0;
+		rgb.red = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.red / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.red;
+		rgb.green = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.green / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.green;
+		rgb.blue = ((conf->my_scene.ambient.radius * conf->my_scene.ambient.color.blue / 255) + intensity * conf->my_scene.light_lst.radius) * aux2->color.blue;
+		tmp = rgb_to_int(rgb);
 		conf->my_pixel.color = tmp;
 	}
 }

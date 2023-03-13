@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:55:31 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/09 13:34:31 by valarcon         ###   ########.fr       */
+/*   Updated: 2023/03/13 10:03:57 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ int			ft_vector_to_plane(t_vector vision, t_m_plane *objet);
 int			ft_vector_to_cylinder(t_vector vision, t_cylinder *objet);
 int			ft_vector_to_sphere(t_vector vision, t_sphere *objet);
 int			ft_dist_point_plane(t_vector plane, int extra, t_vector point);
+t_vector	ft_coords_point_cylinder(t_cylinder *obj, t_vector vision);
 t_vector	vec(double x, double y, double z);
 t_vector	ft_coords_point_plane(t_m_plane *plane, t_vector line);
 double		ft_module(t_vector v);
