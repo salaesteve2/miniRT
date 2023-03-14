@@ -6,7 +6,7 @@
 /*   By: sasalama < sasalama@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:45:00 by sasalama          #+#    #+#             */
-/*   Updated: 2023/03/13 10:10:59 by sasalama         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:33:49 by sasalama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,28 +100,118 @@ int	ft_light_intersec(t_objet *obj, t_conf *conf)
 	t_sphere	*sphere;
 	t_cylinder	*cylinder;
 	t_m_plane	*plane;
+	t_sphere	*sphere2;
+	t_cylinder	*cylinder2;
+	t_m_plane	*plane2;
+	t_objet		*obj2;
 	int			coords_light;
+	t_list		*list;
+	double		mod;
+	double		mod2;
+	t_objet		*res;
 
-	if (obj->type == 1)
+	mod = 0;
+	mod2 = 10000;
+	list = conf->my_scene.obj_lst;
+	obj2 = (t_objet *)list->content;
+	res = obj2;
+	while (list->content)
 	{
-		sphere = (t_sphere *)obj->objet;
-		coords_light = ft_coords_light_sphere(sphere, conf->my_scene.light_lst.pos);
-		if (coords_light == 1)
-			return (1);
+		obj2 = (t_objet *)list->content;
+		if (obj2->type == 1)
+		{
+			sphere = (t_sphere *)obj2->objet;
+			coords_light = ft_coords_light_sphere(sphere, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				mod = coords_light;
+				if (mod < mod2)
+				{
+					mod2 = mod;
+					res = obj2;
+				}
+			}
+		}
+		if (obj2->type == 2)
+		{
+			cylinder = (t_cylinder *)obj2->objet;
+			coords_light = ft_coords_light_cylinder(cylinder, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				mod = coords_light;
+				if (mod < mod2)
+				{
+					mod2 = mod;
+					res = obj2;
+				}
+			}
+		}
+		if (obj2->type == 3)
+		{
+			plane = (t_m_plane *)obj2->objet;
+			coords_light = ft_coords_light_plane(plane, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				mod = coords_light;
+				if (mod < mod2)
+				{
+					mod2 = mod;
+					res = obj2;
+				}
+			}
+		}
+		list = list->next;
 	}
-	if (obj->type == 2)
+	coords_light = 0;
+	if (res->type == obj->type)
 	{
-		cylinder = (t_cylinder *)obj->objet;
-		coords_light = ft_coords_light_cylinder(cylinder, conf->my_scene.light_lst.pos);
-		if (coords_light == 1)
-			return (1);
-	}
-	if (obj->type == 1)
-	{
-		plane = (t_m_plane *)obj->objet;
-		coords_light = ft_coords_light_plane(plane, conf->my_scene.light_lst.pos);
-		if (coords_light == 1)
-			return (1);
+		if (obj->type == 1)
+		{
+			sphere = (t_sphere *)obj->objet;
+			coords_light = ft_coords_light_sphere(sphere, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				sphere2 = (t_sphere *)res->objet;
+				if (sphere2->center.x == sphere->center.x
+					&& sphere2->center.y == sphere->center.y
+					&& sphere2->center.z == sphere->center.z
+					&& sphere2->radius == sphere->radius)
+					return (1);
+			}
+		}
+		if (obj->type == 2)
+		{
+			cylinder = (t_cylinder *)obj->objet;
+			coords_light = ft_coords_light_cylinder(cylinder, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				cylinder2 = (t_cylinder *)res->objet;
+				if (cylinder2->center.x == cylinder->center.x
+					&& cylinder2->center.y == cylinder->center.y
+					&& cylinder2->center.z == cylinder->center.z
+					&& cylinder2->dir.x == cylinder->dir.x
+					&& cylinder2->dir.y == cylinder->dir.y
+					&& cylinder2->dir.z == cylinder->dir.z
+					&& cylinder2->height == cylinder->height)
+					return (1);
+			}
+		}
+		if (obj->type == 3)
+		{
+			plane = (t_m_plane *)obj->objet;
+			coords_light = ft_coords_light_plane(plane, conf->my_scene.light_lst.pos);
+			if (coords_light == 1)
+			{
+				plane2 = (t_m_plane *)res->objet;
+				if (plane2->point.x == plane->point.x
+					&& plane2->point.y == plane->point.y
+					&& plane2->point.z == plane->point.z
+					&& plane2->normal.x == plane->normal.x
+					&& plane2->normal.y == plane->normal.y
+					&& plane2->normal.z == plane->normal.z)
+					return (1);
+			}
+		}
 	}
 	return (0);
 }
